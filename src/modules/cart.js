@@ -1,8 +1,7 @@
 const CART_INIT = 'CART_INIT';
-const CART_CK = 'CART_CK';
 const CART_SELECT = 'CART_SELECT';
 const CART_ADD_ITEM = 'CART_ADD_ITEM';
-const CART_REMOVE_ITEM = 'CART_REMOVE_ITEM';
+const CART_DEL_ITEM = 'CART_DEL_ITEM';
 
 const initialState = {
     cartList: [
@@ -14,6 +13,16 @@ const initialState = {
                 cartKey: 1,
                 itemId: 1,
                 itemCount: 2,
+            },
+            {
+                cartKey: 2,
+                itemId: 4,
+                itemCount: 5,
+            },
+            {
+                cartKey: 3,
+                itemId: 2,
+                itemCount: 10,
             }
         ]
     ],
@@ -36,13 +45,6 @@ export const cartInit = (userId) => ({
     }
 })
 
-export const cartCk = (userId) => ({
-    type: CART_CK,
-    payload: {
-        userId
-    }
-})
-
 export const cartSelect = (userId) => ({
     type: CART_SELECT,
     payload: {
@@ -50,22 +52,25 @@ export const cartSelect = (userId) => ({
     }
 })
 
-export const cartAddItem = (userId) => ({
+export const cartAddItem = (userId, itemId) => ({
     type: CART_ADD_ITEM,
     payload: {
-        userId
+        userId,
+        itemId
     }
 })
 
-export const cartRemoveItem = (userId) => ({
-    type: CART_REMOVE_ITEM,
+export const cartDelItem = (userId, itemId) => ({
+    type: CART_DEL_ITEM,
     payload: {
-        userId
+        userId,
+        itemId
     }
 })
+
+
 
 function cart(state = initialState, action) {
-    // console.log('cart_select >>>> ', state.cartList) 
     switch(action.type) {
         case CART_INIT: 
             return {
@@ -77,47 +82,24 @@ function cart(state = initialState, action) {
                 ],
                 cartList: state.cartList.concat([[{userId: action.payload.userId}]])
             }
-        case CART_CK: 
-            return {
-                
-            }
         case CART_SELECT:
-            // console.log('cart_select >> cart ', state.cartList.some((cart) => (cart[0].userId === action.payload.userId)))
-            console.log('cart_select[0]  >>>> ', state.cartList[0][0]) 
-            console.log('cart_select[0] userId >>>> ', state.cartList[0][0].userId) 
-            console.log('cart_select[0] itemId >>>> ', state.cartList[0][1].itemId) 
-            console.log('cart_select[0] itemCount >>>> ', state.cartList[0][1].itemCount) 
-            console.log('cart_select[1] userId >>>> ', state.cartList[1][0].userId) 
-            console.log('cart')
-            console.log('==============================================================');
-            // console.log('some ? >> ', );
-
-            let a = (state.cartList.forEach((cart) =>  cart[0].userId === action.payload.userId))
-            
-            let b = (state.cartList.forEach((cart) =>  {
-                return cart[0].userId === action.payload.userId
-            }))
-
-            let c = (state.cartList.forEach((cart) =>  {
-                if (cart[0].userId === action.payload.userId) {
-                    return [...cart]
-                }
-            }))
-            console.log('a >>>>>>>>>>>> ', a)
-            console.log('b >>>>>>>>>>>> ', b)
-            console.log('c >>>>>>>>>>>> ', c)
-            // let a = state.cartList.((cart) => (cart[0].userId === action.payload.userId));
-            // console.log('a', a)
-            // a.
-
             return {
                 ...state,
+                userCart: (state.cartList.filter((cart) =>  (cart[0].userId === action.payload.userId)))
             }
         case CART_ADD_ITEM: 
+            const cartIndex = state.cartList.findIndex((cart) => cart[0].userId === action.payload.userId);
+            const arrayCart = Array.isArray(state.userCart[0]) ? state.userCart[0] : state.userCart;
+            const cartItem = arrayCart.concat({cartKey: arrayCart.length, itemId: action.payload.itemId, itemCount: 1});
+            state.cartList[cartIndex] = cartItem;
             return {
-                
+                ...state,
+                userCart: cartItem,
+                cartList: state.cartList
             }
-        case CART_REMOVE_ITEM: 
+        case CART_DEL_ITEM: 
+            console.log('del >>>>>>>>>>> ', state.userCart.filter((item) => (item.itemId !== action.payload.itemId)))
+            // console.log()
             return {
                 
             }

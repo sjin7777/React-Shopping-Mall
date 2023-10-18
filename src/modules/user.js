@@ -1,5 +1,5 @@
 const USER_ID_CK = 'USER_ID_CK'
-const USER_CK = 'USER_PWD_CK';
+const USER_CK = 'USER_CK';
 
 const USER_JOIN = 'USER_JOIN';
 const USER_LOGIN = 'USER_LOGIN';
@@ -97,11 +97,9 @@ function user (state = initialState, action) {
                 userList: state.userList.concat(Object.assign({userKey: state.userList.length + 1}, action.payload, {isUserDel: false}))
             }
         case USER_LOGIN:
-            // console.log('login >>>>>>>>>>>>>>>>>>>>> [', action.payload.userId, ', ', action.payload.userPwd, ']')
-            console.log('action.payload >>>>>>>>> ', action.payload)
             return {
                 ...state,
-                // userInfo: action.payload
+                userInfo: state.userList.filter((user) => (user.userId === action.payload.userId) && (user.userPwd === action.payload.userPwd))
             }
 
         case USER_MODIFY:

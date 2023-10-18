@@ -21,7 +21,7 @@ let isIdCk = false;
 function Join({userIdCk, userJoin, cartInit}) {
     const navigate = useNavigate();
     const storeUserIdCk = useSelector((state) => ({user: state.user.userInfo}), shallowEqual).user.userId;
-    
+
     const [ userId, setUserId ] = useState("");
     const [ userPwd, setUserPwd ] = useState("");
     const [ userPwdCk, setUserPwdCk ] = useState("");
@@ -36,25 +36,26 @@ function Join({userIdCk, userJoin, cartInit}) {
     }
 
     useEffect(() => {
-        if(isIdCk) {
-            (storeUserIdCk) ? setMsg('이미 존재하는 아이디입니다.') : setMsg('사용 가능한 아이디입니다.');
-        } 
-    }, [storeUserIdCk, msg, setMsg])
+        if((!userId)) {
+            setMsg('');
+        } else if(isIdCk && storeUserIdCk) {
+            setMsg('이미 존재하는 아이디입니다');
+            isIdCk = false;
+        } else if(isIdCk && !storeUserIdCk){
+            setMsg('사용 가능한 아이디입니다.')
+        }
+    })
 
     const onUserIdDuplicatedCk = () => {
-        if(userId) {
-            isIdCk = true;
-            userIdCk(userId)
-        } else {
-            isIdCk = false
-            setMsg('아이디를 입력해주세요')
-        }
+        isIdCk = true;
+        userIdCk(userId)
     }
     
     
-
     const onSubmitHandler = (e) => {
-        if(!isIdCk) {
+        if(!userId){
+            setMsg('아이디를 입력해주세요')
+        }else if(!isIdCk) {
             setMsg('아이디 체크는 필수입니다')
         } else if(!userPwd) {
             setMsg('패스워드를 입력해주세요')
@@ -79,7 +80,7 @@ function Join({userIdCk, userJoin, cartInit}) {
                 <div>
                     <label>아이디</label>
                     <input type="text" value={userId} onChange={onUserIdHandler}/>
-                    <button type="button" onClick={onUserIdDuplicatedCk} disabled={(isIdCk && !storeUserIdCk)} >중복확인</button>
+                    <button type="button" onClick={() => userId && onUserIdDuplicatedCk()} disabled={(isIdCk && !storeUserIdCk)} >중복확인</button>
                 </div>
                 <div>
                     <label>패스워드</label>

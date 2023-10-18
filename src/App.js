@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Main from "./components/pages/Main";
-import ItemDetail from "./components/pages/ItemDetail";
+import ItemDetail from "./components/pages/ProductDetail";
 import Join from "./components/pages/Join";
 import Login from "./components/pages/Login";
 import MyPage from "./components/pages/user/MyPage";
@@ -13,7 +13,7 @@ function App() {
             <Header />
             <Routes>
                 <Route index element={<Main />} />
-                <Route path="itemDetail" element={<ItemDetail />}/>
+                <Route path="productDetail/:productId" element={<ItemDetail />}/>
 
                 <Route path="join" element={<Join />} />
                 <Route path="Login" element={<Login />} />

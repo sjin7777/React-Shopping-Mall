@@ -6,12 +6,12 @@ import logger from "redux-logger";
 import thunk from "redux-thunk";
 import user from "../modules/user";
 import cart from "../modules/cart";
-// import persistReducer from "redux-persist/es/persistReducer";
-// import persistStore from "redux-persist/es/persistStore";
+import token from "../modules/token";
 
 const rootReducer = combineReducers({
     user,
-    cart
+    cart,
+    token
 })
 
 const persistConfig = {
