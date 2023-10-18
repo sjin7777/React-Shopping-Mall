@@ -1,19 +1,21 @@
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { delToken } from "../../modules/token";
+import { userLogout } from "../../modules/user";
 
 function Header() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const storeToken = useSelector((state) => ({ token: state.token}), shallowEqual).token;
     const storeIsLogin = storeToken.isLogin;
-    const storeUserId = (storeIsLogin) ? storeToken.userId : '';
+    const storeUserId = (storeIsLogin) ? storeToken.userId : null;
 
     const navGuest = (storeIsLogin) ? {display: "none"} : {display: "inline"};
     const navUser = (storeIsLogin) ? {display: "inline"} : {display: "none"};
     
     const onLogoutHandler = () => {
         if(window.confirm('로그아웃 하시겠습니까')) {
+            dispatch(userLogout(storeUserId))
             dispatch(delToken(storeUserId))
             navigate("/");
         }

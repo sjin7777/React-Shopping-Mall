@@ -7,7 +7,7 @@ function CartList() {
     const storeToken = useSelector((state) => ({ token: state.token }), shallowEqual).token;
     const storeCart = useSelector((state) => ({ cart: state.cart }), shallowEqual).cart.userCart;
     const arrayCart = Array.isArray(storeCart[0]) ? storeCart[0] : storeCart;
-    console.log('cartList storeCart >>>> ', arrayCart);
+    // console.log('cartList storeCart >>>> ', arrayCart);
     
     const ck = (storeCart) && (storeToken.isLogin);
 
@@ -31,7 +31,7 @@ function CartList() {
         
     }
 
-    console.log(items)
+    // console.log(items)
     return (
         <>
             <h1> {storeUserId}의 장바구니</h1>

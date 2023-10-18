@@ -3,6 +3,7 @@ const USER_CK = 'USER_CK';
 
 const USER_JOIN = 'USER_JOIN';
 const USER_LOGIN = 'USER_LOGIN';
+const USER_LOGOUT = 'USER_LOGOUT';
 
 const USER_MODIFY = 'USER_MODIFY';
 const USER_DELETE = 'USER_DELETE';
@@ -58,6 +59,13 @@ export const userLogin = (userId, userPwd) => ({
     }
 })
 
+export const userLogout = (userId) => ({
+    type: USER_LOGOUT,
+    payload: {
+        userId
+    }
+})
+
 export const userModify = (userId) => ({
     type: USER_MODIFY,
     payload: {
@@ -100,6 +108,14 @@ function user (state = initialState, action) {
             return {
                 ...state,
                 userInfo: state.userList.filter((user) => (user.userId === action.payload.userId) && (user.userPwd === action.payload.userPwd))
+            }
+        case USER_LOGOUT:
+            return {
+                ...state,
+                userInfo: {
+                    userId: null,
+                    userPwd: null
+                }
             }
 
         case USER_MODIFY:

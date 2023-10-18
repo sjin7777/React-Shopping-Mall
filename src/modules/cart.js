@@ -88,20 +88,24 @@ function cart(state = initialState, action) {
                 userCart: (state.cartList.filter((cart) =>  (cart[0].userId === action.payload.userId)))
             }
         case CART_ADD_ITEM: 
-            const cartIndex = state.cartList.findIndex((cart) => cart[0].userId === action.payload.userId);
-            const arrayCart = Array.isArray(state.userCart[0]) ? state.userCart[0] : state.userCart;
-            const cartItem = arrayCart.concat({cartKey: arrayCart.length, itemId: action.payload.itemId, itemCount: 1});
-            state.cartList[cartIndex] = cartItem;
+            const addItemIndex = state.cartList.findIndex((cart) => cart[0].userId === action.payload.userId);
+            const addArrayCart = Array.isArray(state.userCart[0]) ? state.userCart[0] : state.userCart;
+            const addItemCart = addArrayCart.concat({cartKey: addArrayCart.length, itemId: action.payload.itemId, itemCount: 1});
+            state.cartList[addItemIndex] = addItemCart;
             return {
                 ...state,
-                userCart: cartItem,
+                userCart: addItemCart,
                 cartList: state.cartList
             }
         case CART_DEL_ITEM: 
-            console.log('del >>>>>>>>>>> ', state.userCart.filter((item) => (item.itemId !== action.payload.itemId)))
-            // console.log()
+            const delItemIndex = state.cartList.findIndex((cart) => cart[0].userId === action.payload.userId);
+            const delArrayCart = Array.isArray(state.userCart[0]) ? state.userCart[0] : state.userCart;
+            const delItemCart = delArrayCart.filter((cart) => cart.itemId !== action.payload.itemId)
+            state.cartList[delItemIndex] = delItemCart;
             return {
-                
+                ...state,
+                userCart: delItemCart,
+                cartList: state.cartList
             }
         default:
             return state;
