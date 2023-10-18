@@ -1,21 +1,31 @@
 import { useState, useEffect } from "react";
-import { shallowEqual, useSelector } from "react-redux";
+import { connect, shallowEqual, useSelector } from "react-redux";
+import { cartItemCountUp, cartItemCountDown } from "../../../modules/cart";
 
 const url = `https://fakestoreapi.com/products`;
 
-function CartList() {
+const ReduxState = (state) => ({
+    userId: state.userId,
+    itemId: state.itemId,
+    itemCount: state.itemCount
+})
+
+const ReduxAction = (dispatch) => ({
+    cartItemCountUp: (userId, itemId, itemCount) => dispatch(cartItemCountUp(userId, itemId, itemCount)),
+    cartItemCountDown: (userId, itemId, itemCount) => dispatch(cartItemCountDown(userId, itemId, itemCount))
+})
+
+
+function CartList({cartItemCountUp, cartItemCountDown}) {
     const storeToken = useSelector((state) => ({ token: state.token }), shallowEqual).token;
     const storeCart = useSelector((state) => ({ cart: state.cart }), shallowEqual).cart.userCart;
     const arrayCart = Array.isArray(storeCart[0]) ? storeCart[0] : storeCart;
-    // console.log('cartList storeCart >>>> ', arrayCart);
     
     const ck = (storeCart) && (storeToken.isLogin);
-
     const storeUserId = (ck) ? storeToken.userId : '';
     const storeUserCart = (ck) ? arrayCart.slice(1, arrayCart.length) : null;
-
     const [ items, setItems ] = useState([]);
-
+    
     useEffect(() => {
         fetch(url, {method: "GET"})
         .then((response) => response.json())
@@ -24,14 +34,8 @@ function CartList() {
             dataArr = dataArr.map((data) => Object.assign(data, storeUserCart.find((storeCart) => storeCart.itemId === data.id)))
             setItems(dataArr)
         })
-    }, [])
+    }, [storeUserCart])
 
-
-    const onChangeHandler = () => {
-        
-    }
-
-    // console.log(items)
     return (
         <>
             <h1> {storeUserId}의 장바구니</h1>
@@ -49,13 +53,13 @@ function CartList() {
                     </div>
                     <div>
                         <span>수량</span>
-                        {/* <button onClick={() => onDecrement(item.id, item.productCount, counter)}>-</button> */}
-                        <input type="number" value={item.itemCount} onChange={onChangeHandler} style={{width: "50px"}}/>
-                        {/* <button onClick={() => onIncrement(item.id, item.productCount, counter)}>+</button> */}
+                        <button onClick={() => cartItemCountDown(storeUserId, item.id, item.itemCount)}>-</button>
+                        <input type="number" value={item.itemCount} onChange={(e) => e.target.value} style={{width: "50px"}}/>
+                        <button onClick={() => cartItemCountUp(storeUserId, item.id, item.itemCount)}>+</button>
                     </div>
                 </div>
             ))}
         </>
     )
 }
-export default CartList;
+export default connect(ReduxState, ReduxAction)(CartList);
