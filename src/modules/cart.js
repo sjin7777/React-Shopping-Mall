@@ -1,11 +1,10 @@
 const CART_INIT = 'CART_INIT';
 const CART_SELECT = 'CART_SELECT';
-const CART_REMOVE = 'CART_REMOVE'
+const CART_REMOVE = 'CART_REMOVE';
 const CART_ADD_ITEM = 'CART_ADD_ITEM';
 const CART_DEL_ITEM = 'CART_DEL_ITEM';
 const CART_ITEM_COUNT_UP = 'CART_ITEM_COUNT_UP';
 const CART_ITEM_COUNT_DOWN = 'CART_ITEM_COUNT_DOWN';
-
 
 
 const initialState = {
@@ -30,6 +29,8 @@ const initialState = {
     }
 };
 
+
+
 export const cartInit = (userId) => ({
     type: CART_INIT,
     payload: {
@@ -47,7 +48,7 @@ export const cartRemove = (userId) => ({
     paylad: {
         userId
     }
-})
+});
 export const cartAddItem = (userId, itemId) => ({
     type: CART_ADD_ITEM,
     payload: {
@@ -77,7 +78,7 @@ export const cartItemCountDown = (userId, itemId, itemCount) => ({
         itemId,
         itemCount
     }
-})
+});
 
 
 
@@ -94,20 +95,20 @@ function cart(state = initialState, action) {
                 [action.payload.userId]: state.cartList[action.payload.userId]
             }
         case CART_REMOVE:
-            delete state[action.paylad.userId]
+            delete state[action.paylad.userId];
             return {
                 ...state,
             }
 
         case CART_ADD_ITEM: 
-            state.cartList[action.payload.userId] = state.cartList[action.payload.userId].concat({cartKey: action.payload.userId + state.cartList[action.payload.userId].length, itemId: action.payload.itemId, itemCount: 1})
+            state.cartList[action.payload.userId] = state.cartList[action.payload.userId].concat({cartKey: action.payload.userId + state.cartList[action.payload.userId].length, itemId: action.payload.itemId, itemCount: 1});
             return {
                 ...state,
                 cartList: state.cartList,
                 [action.payload.userId]: state.cartList[action.payload.userId],
             }
         case CART_DEL_ITEM: 
-            state.cartList[action.payload.userId]  = state.cartList[action.payload.userId].filter((item) => item.itemId !== action.payload.itemId)
+            state.cartList[action.payload.userId] = state.cartList[action.payload.userId].filter((item) => item.itemId !== action.payload.itemId);
             return {
                 ...state,
                 cartList: state.cartList,
@@ -115,16 +116,14 @@ function cart(state = initialState, action) {
             }
 
         case CART_ITEM_COUNT_UP:
-            const itemCountUpIndex = state.cartList[action.payload.userId].findIndex((item) => item.itemId === action.payload.itemId)
-            state.cartList[action.payload.userId][itemCountUpIndex].itemCount += 1
+            state.cartList[action.payload.userId] = state.cartList[action.payload.userId].map((item) => (item.itemId === action.payload.itemId) ? {...item, itemCount: action.payload.itemCount + 1} : item)
             return {
                 ...state,
                 cartList: state.cartList,
                 [action.payload.userId]: state.cartList[action.payload.userId],
             }
         case CART_ITEM_COUNT_DOWN:
-            const itemCountDownIndex = state.cartList[action.payload.userId].findIndex((item) => item.itemId === action.payload.itemId)
-            state.cartList[action.payload.userId][itemCountDownIndex].itemCount -= 1
+            state.cartList[action.payload.userId] = state.cartList[action.payload.userId].map((item) => (item.itemId === action.payload.itemId) ? {...item, itemCount: action.payload.itemCount - 1} : item)
             return {
                 ...state,
                 cartList: state.cartList,

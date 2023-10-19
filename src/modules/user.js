@@ -7,6 +7,7 @@ const USER_MODIFY = 'USER_MODIFY';
 const USER_DELETE = 'USER_DELETE';
 
 
+
 const initialState = {
     userList: [
         {
@@ -24,6 +25,8 @@ const initialState = {
         isUserDel: false
     }
 }
+
+
 
 export const userIdCk = (userId) => ({
     type: USER_ID_CK,
@@ -70,6 +73,7 @@ export const userDelete = (userId) => ({
         userId
     }
 });
+
 
 
 function user (state = initialState, action) {

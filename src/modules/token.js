@@ -1,10 +1,14 @@
 const SET_TOKEN = 'SET_TOKEN';
 const DEL_TOKEN = 'DEL_TOKEN';
 
+
+
 const initialState = {
     userId: '',
     isLogin: false,
-}
+};
+
+
 
 export const setToken = (userId) => ({
     type: SET_TOKEN,
@@ -12,15 +16,16 @@ export const setToken = (userId) => ({
         userId,
         isLogin: true
     }
-})
-
+});
 export const delToken = (userId) => ({
     type: DEL_TOKEN,
     payload: {
         userId,
         isLogin: false
     }
-})
+});
+
+
 
 function token(state=initialState, action) {
     switch(action.type) {
