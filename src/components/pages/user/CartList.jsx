@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { connect, shallowEqual, useSelector } from "react-redux";
 import { cartItemCountUp, cartItemCountDown } from "../../../modules/cart";
 
@@ -22,7 +22,9 @@ function CartList({cartItemCountUp, cartItemCountDown}) {
     const storeUserCart = useSelector((state) => ({ cart: state.cart }), shallowEqual).cart[storeUserId];
     
     const [ items, setItems ] = useState([]);
-    
+    const [ checkedList, setCheckedList ] = useState([]);
+    const [ isAllChecked, setIsAllChecked ] = useState(false);
+
     useEffect(() => {
         fetch(url, {method: "GET"})
         .then((response) => response.json())
@@ -33,16 +35,36 @@ function CartList({cartItemCountUp, cartItemCountDown}) {
         })
     }, [storeUserCart, items])
 
+
+    const onCheckBoxHandler = (e, cartKey) => {
+        (e.currentTarget.checked) ? setCheckedList([...checkedList, cartKey]) : setCheckedList(checkedList.filter((checked) => checked !== cartKey));
+    };
+
+    const onAllCheckBoxHandler = (e) => {
+        setIsAllChecked(e.currentTarget.checked);
+        (!isAllChecked) ? items.map((item) => (!checkedList.includes((item.cartKey)) && setCheckedList(prev => prev.concat(item.cartKey)))) : setCheckedList([]);
+    }
     
+    useEffect(() => {
+        setIsAllChecked((checkedList.length) === (items.map((item) => item.cartKey).length) && (checkedList.length > 0))
+        // console.log('checkedList >>>>>>>>>>> ', checkedList)
+    }, [checkedList, isAllChecked, setIsAllChecked])
+
+
+
+
     return (
         <>
             <h1> {storeUserId}의 장바구니</h1>
-            <button>삭제하기</button>
+            <div>
+                <input type="checkbox" checked={isAllChecked} onChange={(e) => onAllCheckBoxHandler(e)}/>
+                <button>삭제하기</button>
+            </div>
             
             {items.map((item) => (
                 <div key={item.cartKey} style={{border: "1px solid black"}}>
                     <div>
-                        <input key={item.cartKey} type="checkbox"/>
+                        <input type="checkbox" checked={checkedList.includes(item.cartKey)} onChange={(e) => onCheckBoxHandler(e, item.cartKey)}/>
                         <span>{item.title}</span> 
                     </div>
                     <div>
