@@ -17,18 +17,14 @@ const ReduxAction = (dispatch) => ({
 function ProductDetail({cartAddItem, cartDelItem}) {
     const navigate = useNavigate();
     const storeToken = useSelector((state) => ({ token: state.token }), shallowEqual).token;
-    const storeCart = useSelector((state) => ({ cart: state.cart }), shallowEqual).cart.userCart;
-    const arrayCart = Array.isArray(storeCart[0]) ? storeCart[0] : storeCart;
+    const storeUserId = (storeToken.isLogin) ? storeToken.userId : '';
+    const storeUserCart = useSelector((state) => ({ cart: state.cart }), shallowEqual).cart[storeUserId];
 
     const {id, title, price, description, category, image, rating} = useLocation().state.item;
     const [ btnText, setBtnText ] = useState("");
-    const ck = (arrayCart) && (storeToken.isLogin);
 
-    const storeUserId = (ck) ? storeToken.userId : '';
-    const storeUserCart = (ck) ? arrayCart.slice(1, arrayCart.length) : null;
+    let inCart = (storeUserId) && storeUserCart.some((item) => item.itemId === id)
     
-    let inCart = (ck) ? storeUserCart.some((item) => item.itemId === id) : false;
-
     useEffect(() => {
         (inCart) ? setBtnText("장바구니 삭제") : setBtnText("장바구니 추가");
     })
@@ -37,6 +33,7 @@ function ProductDetail({cartAddItem, cartDelItem}) {
     const onCartHandler = () => {
         if(inCart) {
             cartDelItem(storeUserId, id)
+            alert('장바구니에서 삭제되었습니다.')
             setBtnText("장바구니 추가");
         } else {
             cartAddItem(storeUserId,id)
@@ -52,7 +49,7 @@ function ProductDetail({cartAddItem, cartDelItem}) {
             <div>
                 <h3>{title}</h3>
                 <img src={image} alt={title} style={{width: "200px", height: "200px"}}/>
-                <button onClick={onCartHandler} style={ck ? {display: "inline"} : {display: "none"}}>{btnText}</button>
+                <button onClick={onCartHandler} style={storeUserId ? {display: "inline"} : {display: "none"}}>{btnText}</button>
                 <h5>{price}</h5>
                 <p>{rating.rate}</p>
                 <p>{rating.count}</p>

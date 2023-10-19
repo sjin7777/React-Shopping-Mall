@@ -28,7 +28,6 @@ function ProductList() {
     return (
         <>
             {isLoading ? <h1>Loading....</h1> : itemList}
-            
         </>
     )
 }

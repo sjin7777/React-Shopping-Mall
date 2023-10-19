@@ -2,6 +2,7 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { delToken } from "../../modules/token";
 import { userLogout } from "../../modules/user";
+import { cartRemove } from "../../modules/cart";
 
 function Header() {
     const dispatch = useDispatch();
@@ -17,6 +18,7 @@ function Header() {
         if(window.confirm('로그아웃 하시겠습니까')) {
             dispatch(userLogout(storeUserId))
             dispatch(delToken(storeUserId))
+            dispatch(cartRemove(storeUserId))
             navigate("/");
         }
     }

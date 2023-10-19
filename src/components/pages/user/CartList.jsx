@@ -18,12 +18,9 @@ const ReduxAction = (dispatch) => ({
 
 function CartList({cartItemCountUp, cartItemCountDown}) {
     const storeToken = useSelector((state) => ({ token: state.token }), shallowEqual).token;
-    const storeCart = useSelector((state) => ({ cart: state.cart }), shallowEqual).cart.userCart;
-    const arrayCart = Array.isArray(storeCart[0]) ? storeCart[0] : storeCart;
+    const storeUserId = (storeToken.isLogin) ? storeToken.userId : '';
+    const storeUserCart = useSelector((state) => ({ cart: state.cart }), shallowEqual).cart[storeUserId];
     
-    const ck = (storeCart) && (storeToken.isLogin);
-    const storeUserId = (ck) ? storeToken.userId : '';
-    const storeUserCart = (ck) ? arrayCart.slice(1, arrayCart.length) : null;
     const [ items, setItems ] = useState([]);
     
     useEffect(() => {
@@ -34,12 +31,13 @@ function CartList({cartItemCountUp, cartItemCountDown}) {
             dataArr = dataArr.map((data) => Object.assign(data, storeUserCart.find((storeCart) => storeCart.itemId === data.id)))
             setItems(dataArr)
         })
-    }, [storeUserCart])
+    }, [storeUserCart, items])
 
+    
     return (
         <>
             <h1> {storeUserId}의 장바구니</h1>
-            <button >삭제하기</button>
+            <button>삭제하기</button>
             
             {items.map((item) => (
                 <div key={item.cartKey} style={{border: "1px solid black"}}>

@@ -1,43 +1,33 @@
 const CART_INIT = 'CART_INIT';
 const CART_SELECT = 'CART_SELECT';
+const CART_REMOVE = 'CART_REMOVE'
 const CART_ADD_ITEM = 'CART_ADD_ITEM';
 const CART_DEL_ITEM = 'CART_DEL_ITEM';
 const CART_ITEM_COUNT_UP = 'CART_ITEM_COUNT_UP';
 const CART_ITEM_COUNT_DOWN = 'CART_ITEM_COUNT_DOWN';
 
+
+
 const initialState = {
-    cartList: [
-        [
+    cartList: {
+        admin: [
             {
-                userId: 'admin'
-            },
-            {
-                cartKey: 1,
+                cartKey: 'admin' + 0,
                 itemId: 1,
                 itemCount: 2,
             },
             {
-                cartKey: 2,
+                cartKey: 'admin' + 1,
                 itemId: 4,
                 itemCount: 5,
             },
             {
-                cartKey: 3,
+                cartKey: 'admin' + 2,
                 itemId: 2,
                 itemCount: 10,
             }
         ]
-    ],
-    userCart: [
-        {
-            userId: 'admin'
-        },
-        {
-            cartKey: 1,
-            itemId: 1,
-            itemCount: 2,
-        }
-    ]
+    }
 };
 
 export const cartInit = (userId) => ({
@@ -46,14 +36,18 @@ export const cartInit = (userId) => ({
         userId
     }
 });
-
 export const cartSelect = (userId) => ({
     type: CART_SELECT,
     payload: {
         userId
     }
 });
-
+export const cartRemove = (userId) => ({
+    type: CART_REMOVE,
+    paylad: {
+        userId
+    }
+})
 export const cartAddItem = (userId, itemId) => ({
     type: CART_ADD_ITEM,
     payload: {
@@ -61,7 +55,6 @@ export const cartAddItem = (userId, itemId) => ({
         itemId
     }
 });
-
 export const cartDelItem = (userId, itemId) => ({
     type: CART_DEL_ITEM,
     payload: {
@@ -69,7 +62,6 @@ export const cartDelItem = (userId, itemId) => ({
         itemId
     }
 });
-
 export const cartItemCountUp = (userId, itemId, itemCount) => ({
     type: CART_ITEM_COUNT_UP,
     payload: {
@@ -78,7 +70,6 @@ export const cartItemCountUp = (userId, itemId, itemCount) => ({
         itemCount
     }
 });
-
 export const cartItemCountDown = (userId, itemId, itemCount) => ({
     type: CART_ITEM_COUNT_DOWN,
     payload: {
@@ -88,73 +79,60 @@ export const cartItemCountDown = (userId, itemId, itemCount) => ({
     }
 })
 
+
+
 function cart(state = initialState, action) {
     switch(action.type) {
         case CART_INIT: 
             return {
                 ...state,
-                userCart: [
-                    {
-                        userId: action.payload.userId
-                    }
-                ],
-                cartList: state.cartList.concat([[{userId: action.payload.userId}]])
+                cartList: Object.assign(state.cartList, {[action.payload.userId]: []})
             }
         case CART_SELECT:
             return {
                 ...state,
-                userCart: (state.cartList.filter((cart) => (cart[0].userId === action.payload.userId)))
+                [action.payload.userId]: state.cartList[action.payload.userId]
+            }
+        case CART_REMOVE:
+            delete state[action.paylad.userId]
+            return {
+                ...state,
             }
 
         case CART_ADD_ITEM: 
-            const addUserIndex = state.cartList.findIndex((cart) => cart[0].userId === action.payload.userId);
-            const addUserArrayCart = Array.isArray(state.userCart[0]) ? state.userCart[0] : state.userCart;
-            const addUserCart = addUserArrayCart.concat({cartKey: addUserArrayCart.length, itemId: action.payload.itemId, itemCount: 1});
-            state.cartList[addUserIndex] = addUserCart;
+            state.cartList[action.payload.userId] = state.cartList[action.payload.userId].concat({cartKey: action.payload.userId + state.cartList[action.payload.userId].length, itemId: action.payload.itemId, itemCount: 1})
             return {
                 ...state,
-                userCart: addUserCart,
-                cartList: state.cartList
+                cartList: state.cartList,
+                [action.payload.userId]: state.cartList[action.payload.userId],
             }
         case CART_DEL_ITEM: 
-            const delUserIndex = state.cartList.findIndex((cart) => cart[0].userId === action.payload.userId);
-            const delUserArrayCart = Array.isArray(state.userCart[0]) ? state.userCart[0] : state.userCart;
-            const delUserCart = delUserArrayCart.filter((cart) => cart.itemId !== action.payload.itemId)
-            state.cartList[delUserIndex] = delUserCart;
+            state.cartList[action.payload.userId]  = state.cartList[action.payload.userId].filter((item) => item.itemId !== action.payload.itemId)
             return {
                 ...state,
-                userCart: delUserCart,
-                cartList: state.cartList
+                cartList: state.cartList,
+                [action.payload.userId]: state.cartList[action.payload.userId],
             }
 
         case CART_ITEM_COUNT_UP:
-            const upUserIndex = state.cartList.findIndex((cart) => cart[0].userId === action.payload.userId);
-            const upUserArrayCart = Array.isArray(state.userCart[0]) ? state.userCart[0] : state.userCart;
-            const upUserItemIndex = upUserArrayCart.findIndex((item) => item.itemId === action.payload.itemId);
-            upUserArrayCart[upUserItemIndex].itemCount += 1
-            state.cartList[upUserIndex][upUserItemIndex].itemCount = upUserArrayCart[upUserItemIndex].itemCount
-            
+            const itemCountUpIndex = state.cartList[action.payload.userId].findIndex((item) => item.itemId === action.payload.itemId)
+            state.cartList[action.payload.userId][itemCountUpIndex].itemCount += 1
             return {
                 ...state,
-                userCart: state.userCart,
-                cartList: state.cartList
+                cartList: state.cartList,
+                [action.payload.userId]: state.cartList[action.payload.userId],
             }
         case CART_ITEM_COUNT_DOWN:
-            const downUserIndex = state.cartList.findIndex((cart) => cart[0].userId === action.payload.userId);
-            const downUserArrayCart = Array.isArray(state.userCart[0]) ? state.userCart[0] : state.userCart;
-            const downUserItemIndex = downUserArrayCart.findIndex((item) => item.itemId === action.payload.itemId);
-            downUserArrayCart[downUserItemIndex].itemCount -= 1
-            state.cartList[downUserIndex][downUserItemIndex].itemCount = upUserArrayCart[upUserItemIndex].itemCount
-            
+            const itemCountDownIndex = state.cartList[action.payload.userId].findIndex((item) => item.itemId === action.payload.itemId)
+            state.cartList[action.payload.userId][itemCountDownIndex].itemCount -= 1
             return {
                 ...state,
-                userCart: state.userCart,
-                cartList: state.cartList
+                cartList: state.cartList,
+                [action.payload.userId]: state.cartList[action.payload.userId],
             }
         default:
             return state;
     }
-
 }
 
 export default cart;

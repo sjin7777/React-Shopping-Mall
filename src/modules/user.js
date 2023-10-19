@@ -1,10 +1,8 @@
 const USER_ID_CK = 'USER_ID_CK'
 const USER_CK = 'USER_CK';
-
 const USER_JOIN = 'USER_JOIN';
 const USER_LOGIN = 'USER_LOGIN';
 const USER_LOGOUT = 'USER_LOGOUT';
-
 const USER_MODIFY = 'USER_MODIFY';
 const USER_DELETE = 'USER_DELETE';
 
@@ -18,7 +16,6 @@ const initialState = {
             isUserDel: false
         }
     ],
-
     userInfo: 
     {
         userKey: 0,
@@ -33,52 +30,46 @@ export const userIdCk = (userId) => ({
     payload: {
         userId,
     }
-})
-
+});
 export const userCk = (userId, userPwd) => ({
     type: USER_CK,
     payload: {
         userId,
         userPwd
     }
-})
-
+});
 export const userJoin = (userId, userPwd) => ({
     type: USER_JOIN,
     payload: {
         userId,
         userPwd
     }
-})
-
+});
 export const userLogin = (userId, userPwd) => ({
     type: USER_LOGIN,
     payload: {
         userId,
         userPwd
     }
-})
-
+});
 export const userLogout = (userId) => ({
     type: USER_LOGOUT,
     payload: {
         userId
     }
-})
-
+});
 export const userModify = (userId) => ({
     type: USER_MODIFY,
     payload: {
         userId
     }
-})
-
+});
 export const userDelete = (userId) => ({
     type: USER_DELETE,
     payload: {
         userId
     }
-})
+});
 
 
 function user (state = initialState, action) {
