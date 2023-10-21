@@ -29,7 +29,7 @@ function PurchaseOrder() {
 
     const onOrderHandler = () => {
         dispatch(orderSheet(storeUserId, checkedList, getCurrentDate(new Date()), address, total));
-        navigate("/user/OrderHistory");
+        navigate("/user/OrderHistory", {state: getCurrentDate(new Date())});
     }
 
     return (
