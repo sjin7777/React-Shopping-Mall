@@ -19,7 +19,7 @@ function ProductList() {
     }, [])
     
     const itemList = items.map((item) => (
-        <div key={item.id} onClick={() => navigate(`/productDetail/${item.id}`, {state: {item}})} style={{border: "2px solid black"}}>
+        <div key={item.id} onClick={() => navigate(`/ProductDetail/${item.id}`, {state: {item}})} style={{border: "2px solid black"}}>
             <img src={item.image} alt={item.title} style={{width: "50px", height: "50px"}}/>
             <h3>{item.title}</h3>
             <h5>{item.price}</h5>

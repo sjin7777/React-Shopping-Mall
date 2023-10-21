@@ -1,11 +1,13 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Header from "./components/containers/Header";
 import Main from "./components/pages/Main";
 import ItemDetail from "./components/pages/ProductDetail";
 import Join from "./components/pages/Join";
 import Login from "./components/pages/Login";
 import MyPage from "./components/pages/user/MyPage";
 import CartList from "./components/pages/user/CartList";
-import Header from "./components/containers/Header";
+import OrderHistory from "./components/pages/user/OrderHistory";
+import PurchaseOrder from "./components/pages/user/PurchaseOrder";
 
 function App() {
     return (
@@ -13,13 +15,15 @@ function App() {
             <Header />
             <Routes>
                 <Route index element={<Main />} />
-                <Route path="productDetail/:productId" element={<ItemDetail />}/>
+                <Route path="ProductDetail/:productId" element={<ItemDetail />}/>
 
-                <Route path="join" element={<Join />} />
+                <Route path="Join" element={<Join />} />
                 <Route path="Login" element={<Login />} />
 
-                <Route path="user/mypage" element={<MyPage />}/>
-                <Route path="user/cartlist" element={<CartList />}/>
+                <Route path="user/MyPage" element={<MyPage />}/>
+                <Route path="user/CartList" element={<CartList />}/>
+                <Route path="user/PurchaseOrder" element={<PurchaseOrder />}/>
+                <Route path="user/OrderHistory" element={<OrderHistory />}/>
             </Routes>
         </BrowserRouter>
     );

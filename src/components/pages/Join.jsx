@@ -3,6 +3,7 @@ import { connect, shallowEqual, useSelector } from "react-redux";
 import { userIdCk, userJoin } from "../../modules/user";
 import { cartInit } from "../../modules/cart";
 import { useNavigate } from "react-router";
+import { orderByInit } from "../../modules/order";
 
 
 const ReduxState = (state) => ({
@@ -13,12 +14,13 @@ const ReduxState = (state) => ({
 const ReduxAction = (dispatch) => ({
     userIdCk: (userId) => dispatch(userIdCk(userId)),
     userJoin: (userId, userPwd) => dispatch(userJoin(userId, userPwd)),
-    cartInit: (userId) => dispatch(cartInit(userId))
+    cartInit: (userId) => dispatch(cartInit(userId)),
+    orderByInit: (userId) => dispatch(orderByInit(userId))
 })
 
 
 let isIdCk = false;
-function Join({userIdCk, userJoin, cartInit}) {
+function Join({userIdCk, userJoin, cartInit, orderByInit}) {
     const navigate = useNavigate();
     const storeUserIdCk = useSelector((state) => ({user: state.user.userInfo}), shallowEqual).user.userId;
 
@@ -68,6 +70,7 @@ function Join({userIdCk, userJoin, cartInit}) {
             setMsg('가입 완료')
             userJoin(userId, userPwd);
             cartInit(userId)
+            orderByInit(userId)
             navigate("/login")
         }
         e.preventDefault();

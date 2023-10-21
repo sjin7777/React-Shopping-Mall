@@ -7,11 +7,14 @@ import thunk from "redux-thunk";
 import user from "../modules/user";
 import cart from "../modules/cart";
 import token from "../modules/token";
+import order from "../modules/order";
+
 
 const rootReducer = combineReducers({
     user,
     cart,
-    token
+    token,
+    order
 })
 
 const persistConfig = {

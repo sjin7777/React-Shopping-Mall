@@ -5,7 +5,6 @@ const CART_REMOVE = 'CART_REMOVE';
 const CART_ADD_ITEM = 'CART_ADD_ITEM';
 const CART_DEL_ITEM = 'CART_DEL_ITEM';
 
-const CART_BUY_ITEM = 'CART_BUTY_ITEM';
 const CART_ITEM_COUNT_UP = 'CART_ITEM_COUNT_UP';
 const CART_ITEM_COUNT_DOWN = 'CART_ITEM_COUNT_DOWN';
 
@@ -66,15 +65,6 @@ export const cartDelItem = (userId, itemId) => ({
         itemId
     }
 });
-export const cartBuyItem = (userId, itemId, itemCount, itemPrice) => ({
-    type: CART_BUY_ITEM, 
-    payload: {
-        userId,
-        itemId,
-        itemCount,
-        itemPrice
-    }
-})
 export const cartItemCountUp = (userId, itemId, itemCount) => ({
     type: CART_ITEM_COUNT_UP,
     payload: {
@@ -125,10 +115,6 @@ function cart(state = initialState, action) {
                 ...state,
                 cartList: state.cartList,
                 [action.payload.userId]: state.cartList[action.payload.userId],
-            }
-        case CART_BUY_ITEM:
-            return {
-                ...state,
             }
 
         case CART_ITEM_COUNT_UP:

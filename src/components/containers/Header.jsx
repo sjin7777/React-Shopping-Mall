@@ -29,13 +29,13 @@ function Header() {
                 <button onClick={() => navigate("/")}>Home</button>
             </header>
             <nav style={navGuest}>
-                <button onClick={() => navigate("/join")}>회원가입</button>
-                <button onClick={() => navigate("/login")}>로그인</button>
+                <button onClick={() => navigate("/Join")}>회원가입</button>
+                <button onClick={() => navigate("/Login")}>로그인</button>
             </nav>
             <nav style={navUser}>
                 <span>회원 {storeUserId}님</span>
-                <button onClick={() => navigate("/user/mypage")}>마이페이지</button>
-                <button onClick={() => navigate("/user/cartlist")}>장바구니</button>
+                <button onClick={() => navigate("/user/MyPage")}>마이페이지</button>
+                <button onClick={() => navigate("/user/CartList")}>장바구니</button>
                 <button onClick={onLogoutHandler}>로그아웃</button>
             </nav>
         
