@@ -3,6 +3,9 @@ const USER_CK = 'USER_CK';
 const USER_JOIN = 'USER_JOIN';
 const USER_LOGIN = 'USER_LOGIN';
 const USER_LOGOUT = 'USER_LOGOUT';
+const USER_ADD_ADDRESS = 'USER_ADD_ADDRESS';
+const USER_DEL_ADDRESS = 'USER_DEL_ADDRESS';
+const USER_MAIN_ADDRESS = 'USER_MAIN_ADDRESS';
 const USER_MODIFY = 'USER_MODIFY';
 const USER_DELETE = 'USER_DELETE';
 
@@ -14,15 +17,19 @@ const initialState = {
             userKey: 1,
             userId: 'admin',
             userPwd: '1234',
-            isUserDel: false
+            isUserDel: false,
+            userAddress: '인천',
+            userAddressList: [],
         }
     ],
     userInfo: 
     {
-        userKey: 0,
-        userId: '',
-        userPwd: '',
-        isUserDel: false
+        userKey: 1,
+        userId: 'admin',
+        userPwd: '1234',
+        isUserDel: false,
+        userAddress: '인천',
+        userAddressList: [],
     }
 }
 
@@ -61,10 +68,32 @@ export const userLogout = (userId) => ({
         userId
     }
 });
-export const userModify = (userId) => ({
+export const userAddAddress = (userId, address) => ({
+    type: USER_ADD_ADDRESS,
+    payload: {
+        userId,
+        address
+    }
+});
+export const userDelAddress = (userId, address) => ({
+    type: USER_DEL_ADDRESS, 
+    payload: {
+        userId,
+        address
+    }
+});
+export const userMainAddress = (userId, address) => ({
+    type: USER_MAIN_ADDRESS,
+    payload: {
+        userId,
+        address
+    }
+});
+export const userModify = (userId, userPwd) => ({
     type: USER_MODIFY,
     payload: {
-        userId
+        userId,
+        userPwd
     }
 });
 export const userDelete = (userId) => ({
@@ -90,19 +119,20 @@ function user (state = initialState, action) {
                 ...state,
                 userInfo: {
                     userId: (state.userList.findIndex((user) => user.userId === action.payload.userId) > -1),
-                    userPwd: (state.userList.findIndex((user) => (user.userId === action.payload.userId) && (user.userPwd === action.payload.userPwd)) > -1)
+                    userPwd: (state.userList.findIndex((user) => (user.userId === action.payload.userId) && (user.userPwd === action.payload.userPwd)) > -1),
+                    isUserDel: (state.userList.findIndex((user) => (user.userId === action.payload.userId) && (user.isUserDel)) > -1)
                 }
             }
 
         case USER_JOIN:
             return {
                 ...state,
-                userList: state.userList.concat(Object.assign({userKey: state.userList.length + 1}, action.payload, {isUserDel: false}))
+                userList: state.userList.concat(Object.assign({userKey: state.userList.length + 1}, action.payload, {isUserDel: false}, {address: null}, {addressList: []} ))
             }
         case USER_LOGIN:
             return {
                 ...state,
-                userInfo: state.userList.filter((user) => (user.userId === action.payload.userId) && (user.userPwd === action.payload.userPwd))
+                userInfo: state.userList.filter((user) => (user.userId === action.payload.userId) && (user.userPwd === action.payload.userPwd) && (user.isUserDel === false))
             }
         case USER_LOGOUT:
             return {
@@ -112,14 +142,42 @@ function user (state = initialState, action) {
                     userPwd: null
                 }
             }
+        
+        case USER_ADD_ADDRESS:
+            state.userList.filter((user) => user.userId === action.payload.userId)[0].addressList = state.userList.filter((user) => user.userId === action.payload.userId)[0].addressList.concat(action.payload.address)
+            return {
+                ...state,
+                userList: state.userList,
+                userInfo: state.userList.filter((user) => user.userId === action.payload.userId)[0]
+            }
+        
+        case USER_DEL_ADDRESS:
+            state.userList.filter((user) => user.userId === action.payload.userId)[0].addressList = state.userList.filter((user) => user.userId === action.payload.userId)[0].addressList.filter((address) => address !== action.payload.address)
+            return {
+                ...state,
+                userList: state.userList,
+                userInfo: state.userList.filter((user) => user.userId === action.payload.userId)[0]
+            }
+        case USER_MAIN_ADDRESS:
+            state.userList.filter((user) => user.userId === action.payload.userId)[0].address = action.payload.address
+            return{
+                ...state,
+                userList: state.userList,
+                userInfo: state.userList.filter((user) => user.userId === action.payload.userId)[0]
+            }
 
         case USER_MODIFY:
+            state.userList.filter((user) => user.userId === action.payload.userId)[0].userPwd = action.payload.userPwd
             return {
-
+                ...state,
+                userList: state.userList,
+                userInfo: state.userList.filter((user) => user.userId === action.payload.userId)[0]
             }
         case USER_DELETE:
+            state.userList.filter((user) => user.userId === action.payload.userId)[0].isUserDel = true
             return {
-
+                ...state,
+                userList: state.userList,
             }
         default:
             return state;

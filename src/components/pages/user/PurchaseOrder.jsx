@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useRef } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { orderSheet } from "../../../modules/order"
-import { useDispatch } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 
 const getCurrentDate = (now) => {
@@ -19,52 +19,65 @@ const getCurrentDate = (now) => {
 function PurchaseOrder() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [ address, setAddress ] = useState("");
-    const {storeUserId, checkedList} = useLocation().state;
-    console.log('storeUserId >>>>>>>>>>>> ', storeUserId)
-    console.log('checkedList >>>>>>>>>>>> ', checkedList)
+    const isChk1 = useRef(false);
+    const isChk2 = useRef(false);
+    const { storeUserId, checkedList } = useLocation().state;
+    const storeUserAddress = useSelector((state) => ({user: state.user}), shallowEqual).user.userInfo.address
 
     let total = 0;
     checkedList.map((item) => total += item.price * item.itemCount)
 
+    const onSubmitHandler = (e) => {
+        if(!storeUserAddress) alert("배송지를 입력해주세요")
+        else if(!isChk1.current.checked) alert("사항1에 동의해주세요")
+        else if(!isChk2.current.checked) alert("사항2에 동의해주세요")
+        else onOrderHandler()
+        e.preventDefault();
+    }
     const onOrderHandler = () => {
-        dispatch(orderSheet(storeUserId, checkedList, getCurrentDate(new Date()), address, total));
+        dispatch(orderSheet(storeUserId, checkedList, getCurrentDate(new Date()), storeUserAddress, total+3000));
         navigate("/user/OrderHistory", {state: getCurrentDate(new Date())});
     }
 
     return (
-        <>
+        <form onSubmit={onSubmitHandler}>
             <div>
                 <div>배송지</div>
-                <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} />
+                <div>{storeUserAddress}</div>
+                <div>
+                    <button onClick={() => navigate("/user/MyPage")}>배송지 변경</button>
+                </div>
             </div>
-
             <div>
                 <div>상품</div>
                 {checkedList.map((item) => (
-                <div key={item.id} style={{border: "1px solid black"}}>
-                    <div>
-                        <span>{item.title}</span> 
+                    <div key={item.id} style={{border: "1px solid black"}}>
+                        <div>
+                            <span>{item.title}</span> 
+                        </div>
+                        <div>
+                            <img alt={item.title} src={item.image} style={{width: "50px", height: "50px"}}/>
+                            <div>가격: {item.price * item.itemCount}</div>
+                            <div>수량: {item.itemCount} </div>
+                        </div>
                     </div>
-                    <div>
-                        <img alt={item.title} src={item.image} style={{width: "50px", height: "50px"}}/>
-                        <div>가격: {item.price * item.itemCount}</div>
-                        <div>수량: {item.itemCount} </div>
-                    </div>
-                </div>
                 ))}
             </div>
-
             <div>
-                <div>최종금액: {total}</div>
+                <div>상품금액: {total}</div>
+                <div>배송비: 3000</div>
+                <div>합계: {total + 3000}</div>
             </div>
-
             <div>
-                <input type="checkbox"/>
-                <input type="checkbox"/>
+                <input type="checkbox" ref={isChk1} />
+                <span>사항 1</span>
             </div>
-            <button  onClick={onOrderHandler}>주문하기</button>
-        </>
+            <div>
+                <input type="checkbox" ref={isChk2} />
+                <span>사항 2</span>
+            </div>
+            <button type="submit">주문하기</button>
+        </form>
     )
 }
 

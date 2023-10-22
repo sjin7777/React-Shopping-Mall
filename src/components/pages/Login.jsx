@@ -7,7 +7,8 @@ import { useNavigate } from "react-router";
 
 const ReduxState = (state) => ({
     userId: state.userId,
-    userPwd: state.userPwd
+    userPwd: state.userPwd,
+    isUserDel: state.isUserDel
 })
 
 const ReduxAction = (dispatch) => ({
@@ -20,31 +21,35 @@ const ReduxAction = (dispatch) => ({
 
 function Login({userCk, userLogin, setToken, cartSelect}) {
     const navigate = useNavigate();
-    const storeUser = useSelector((state) => ({user: state.user.userInfo}), shallowEqual).user;
-    const storeUserIdCk = storeUser.userId;
-    const storeUserPwdCk = storeUser.userPwd;
-
+    const storeUser = useSelector((state) => ({user: state.user}), shallowEqual).user;
+    const storeUserIdCk = storeUser.userInfo.userId;
+    const storeUserPwdCk = storeUser.userInfo.userPwd;
+    const storeUserIsDel = storeUser.userInfo.isUserDel
+    
     const [ userId, setUserId ] = useState("");
     const [ userPwd, setUserPwd ] = useState("");
     const [ msg, setMsg ] = useState("")
     const onUserIdHandler = (e) => setUserId(e.target.value);
     const onUserPwdHandler = (e) => setUserPwd(e.target.value);
     const onChangeMsg = (e) => setMsg(e.target.value);
+    
 
     const onSubmitHandler = (e) => {
         if(!userId) setMsg("아이디를 입력해주세요")
         else if(!userPwd) setMsg("패스워드를 입력해주세요")
         else {
             if(storeUserIdCk) {
-                if(storeUserPwdCk) {
+                if(storeUserPwdCk && !storeUserIsDel) {
                     setMsg("로그인");
                     userLogin(userId, userPwd)
                     setToken(userId)
                     cartSelect(userId)
                     navigate("/")
-                } else {
+                } else if(storeUserIsDel) {
+                    setMsg("탈퇴한 계정입니다.")
+                } else if(!storeUserPwdCk) {
                     setMsg("비밀번호가 일치하지 않습니다")
-                }
+                } 
             } else {
                 setMsg("아이디가 존재하지 않습니다")
             }

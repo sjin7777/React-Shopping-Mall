@@ -43,9 +43,14 @@ function CartList({cartItemCountUp, cartItemCountDown, cartDelItem, orderByItem}
 
     useEffect(() => {
         setIsAllChecked((checkedList.length > 0) && ((checkedList.length) === (items.length)));
-        
+
         console.log('checkedList >>>>>>>>>>>> ', checkedList)
-    }, [cartDelItem, checkedList, setIsAllChecked, items, setCheckedList, isAllChecked, cartItemCountDown, cartItemCountUp])
+    }, [cartDelItem, checkedList, setCheckedList, isAllChecked, setIsAllChecked, items ])
+
+    // useEffect(() => {
+    //     if()
+    //     setItems()
+    // })
 
     
 
@@ -62,10 +67,30 @@ function CartList({cartItemCountUp, cartItemCountDown, cartDelItem, orderByItem}
     }
 
     const onOrderByHandler = () => {
+        (items.map((item) => checkedList.map((checked) => setCheckedList((checked.id === item.id) ? {...checked, itemCount: item.itemCount} : checked))));
+        
+        console.log('11checkedList >>>>>>>>>>>> ', checkedList)
+        
+        console.log('order >> ', checkedList.map((checked) => items.map((item) => (checked.id === item.id) ? {...checked, itemCount: item.itemCount} : checked)))
         orderByItem(storeUserId, checkedList);
         navigate("/user/PurchaseOrder", {state: {storeUserId, checkedList}});
     }
 
+    // const onItemCountUp = (itemId, itemCount) => {
+    //     cartItemCountUp(storeUserId, itemId, itemCount)
+    // }
+
+    // const onItemCountDown = (itemId, itemCount) => {
+    //     setCheckedList(checkedList.map((checked) => (checked.id === itemId) ? {...checked, itemCount: itemCount} : checked));
+    //     cartItemCountDown(storeUserId, itemId, itemCount)
+    // }
+
+    const onChangeHandler = (value, itemId, itemCount) => {
+        setCheckedList(checkedList.map((checked) => (checked.id === itemId) ? {...checked, itemCount: itemCount} : checked));
+        console.log('value >>>>>>>> ', value)
+        console.log('itemId >>>>>>>> ', itemId)
+        console.log('itemCount >>>>>>>> ', itemCount)
+    }
     return (
         <>
             <h1> {storeUserId}의 장바구니</h1>
@@ -74,8 +99,8 @@ function CartList({cartItemCountUp, cartItemCountDown, cartDelItem, orderByItem}
                 <button onClick={onCartDelHandler}>삭제하기</button>
                 <button onClick={onOrderByHandler}>구매하기</button>
             </div>
-            
             {items.map((item) => (
+            
                 <div key={item.id} style={{border: "1px solid black"}}>
                     <div>
                         <input type="checkbox" checked={checkedList.some((checked) => checked.id === item.id)} onChange={(e) => onCheckBoxHandler(e, item)}/>
@@ -88,7 +113,7 @@ function CartList({cartItemCountUp, cartItemCountDown, cartDelItem, orderByItem}
                     <div>
                         <span>수량</span>
                         <button onClick={() => cartItemCountDown(storeUserId, item.id, item.itemCount)} disabled={item.itemCount <= 1}>-</button>
-                        <input type="number" value={item.itemCount} onChange={(e) => (e.target.value)} min="1" max="10" style={{width: "50px"}} />
+                        <input type="number" value={item.itemCount} onChange={(e) => onChangeHandler(e.target.value, item.id, item.itemCount)} min="1" max="10" style={{width: "50px"}} />
                         <button onClick={() => cartItemCountUp(storeUserId, item.id, item.itemCount)} disabled={item.itemCount >= 10}>+</button>
                     </div>
                 </div>
