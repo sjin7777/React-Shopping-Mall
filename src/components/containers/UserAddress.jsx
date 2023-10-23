@@ -10,8 +10,6 @@ function UserAddress() {
     const storeUserArray = Array.isArray(storeUser) ? storeUser[0] : storeUser;
     const storeUserAddressMain = storeUserArray.address;
     const storeUserAddressList = storeUserArray.addressList;
-    console.log('storeUser >>> ', storeUser)
-    
     
     const onAddAddressHandler = () => {
         if(storeUserAddressList.some((address) => address === newAddress)) {
@@ -26,7 +24,7 @@ function UserAddress() {
 
     const onDelAddressHandler = (address) => {
         dispatch(userDelAddress(storeUserId, address));
-        if(address === storeUserAddressMain) dispatch(userMainAddress(storeUserId, null))
+        (address === storeUserAddressMain) && dispatch(userMainAddress(storeUserId, null))
     }
 
     return(
@@ -39,7 +37,7 @@ function UserAddress() {
             <div style={{border: "solid 1px black"}}>
                 <div>
                     <label>기본 배송지</label>
-                    <p>{(storeUserAddressMain) ? storeUserAddressMain : "기본 배송지가 등록 되어있지 않습니다"}</p>
+                    <p>{(storeUserAddressMain) ? storeUserAddressMain : "기본 배송지를 등록해주세요"}</p>
                 </div>
             </div>
             <div style={{border: "solid 1px black"}}>
