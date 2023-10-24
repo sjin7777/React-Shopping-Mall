@@ -12,7 +12,6 @@ function UserAddress() {
     const storeUserAddressList = storeUserArray.addressList;
 
 
-    console.log('storeUser >> ',  storeUser)
     const onAddAddressHandler = () => {
         if(storeUserAddressList.some((address) => address === newAddress)) {
             alert("이미 존재하는 배송지입니다")

@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import { connect, shallowEqual, useSelector } from "react-redux";
+
 import { userIdCk, userJoin } from "../../modules/user";
 import { cartInit } from "../../modules/cart";
 import { useNavigate } from "react-router";
 import { orderByInit } from "../../modules/order";
+
+import { Button, TextField } from "@mui/material";
+
 
 
 const ReduxState = (state) => ({
@@ -38,15 +42,15 @@ function Join({userIdCk, userJoin, cartInit, orderByInit}) {
     }
 
     useEffect(() => {
-        if((!userId)) {
-            setMsg('');
-        } else if(isIdCk && storeUserIdCk) {
-            setMsg('이미 존재하는 아이디입니다');
-            isIdCk = false;
-        } else if(isIdCk && !storeUserIdCk){
-            setMsg('사용 가능한 아이디입니다.')
-        }
-    })
+        if(isIdCk) {
+            if(userId === "") setMsg("아이디를 입력해주세요");
+            else if(!storeUserIdCk) setMsg("사용 가능한 아이디입니다")
+            else if(storeUserIdCk) {
+                setMsg("이미 존재하는 아이디입니다");
+                isIdCk = false;
+            } 
+        } else if(!isIdCk && !userId) setMsg("")
+    }, [isIdCk])
 
     const onUserIdDuplicatedCk = () => {
         isIdCk = true;
@@ -67,11 +71,12 @@ function Join({userIdCk, userJoin, cartInit, orderByInit}) {
             setMsg('패스워드와 패스워드 확인의 값이 일치하지 않습니다.');
             setUserPwdCk("");
         } else {
-            setMsg('가입 완료')
+            setMsg("가입 완료")
             userJoin(userId, userPwd);
             cartInit(userId)
             orderByInit(userId)
             navigate("/login")
+            isIdCk = false
         }
         e.preventDefault();
     }
@@ -80,20 +85,11 @@ function Join({userIdCk, userJoin, cartInit, orderByInit}) {
         <>
             <h1>회원가입</h1>
             <form onSubmit={onSubmitHandler}>
-                <div>
-                    <label>아이디</label>
-                    <input type="text" value={userId} onChange={onUserIdHandler}/>
-                    <button type="button" onClick={() => userId && onUserIdDuplicatedCk()} disabled={(isIdCk && !storeUserIdCk)} >중복확인</button>
-                </div>
-                <div>
-                    <label>패스워드</label>
-                    <input type="password" value={userPwd} onChange={onUserPwdHandler}/>
-                </div>
-                <div>
-                    <label>패스워드 확인</label>
-                    <input type="password" value={userPwdCk} onChange={onUwerPwdCkHandler}/>
-                </div>                
-                <button type="submit">가입</button>
+                <TextField type="text" label="ID" variant="standard" value={userId} onChange={onUserIdHandler} />
+                <Button type="button" variant="outlined" onClick={onUserIdDuplicatedCk} disabled={(isIdCk && !storeUserIdCk && userId !== "")} >중복확인</Button>
+                <TextField type="password" label="Password" variant="standard" value={userPwd} onChange={onUserPwdHandler} style={{display: "block"}} />
+                <TextField type="password" label="Password Check" variant="standard" value={userPwdCk} onChange={onUwerPwdCkHandler} style={{display: "block"}} />
+                <Button type="submit" variant="outlined" color="success" style={{marginTop: "20px", width: "200px"}} >가입</Button>
             </form>
             <div onChange={onChangeMsg}>{msg}</div>
         </>

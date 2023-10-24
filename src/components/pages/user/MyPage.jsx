@@ -1,7 +1,12 @@
+import { useLocation, useNavigate } from "react-router";
+
+import UserInfo from "../../containers/UserInfo";
 import UserAddress from "../../containers/UserAddress";
 import UserOrderList from "../../containers/UserOrderList";
-import UserInfo from "../../containers/UserInfo";
-import { useLocation, useNavigate } from "react-router";
+
+import { Box, Tab } from "@mui/material";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
+
 
 function MyPage() {    
     const navigate = useNavigate();
@@ -9,26 +14,23 @@ function MyPage() {
     const mainType = location.mainType;
     const subType = location.subType;
 
-    const mypageTab = (type) => {
-        switch(type) {
-            case "userInfo":
-                return <UserInfo subType={subType}/>
-            case "userAddress":
-                return <UserAddress />
-            case "userOrderList": 
-                return <UserOrderList />
-            default:
-                return <UserInfo />
-        }
-    }
-
     return(
         <>
             <h1>마이페이지</h1>
-            <button onClick={() => navigate("/user/MyPage", {state: {mainType: "userInfo"}})}>회원 정보</button>
-            <button onClick={() => navigate("/user/MyPage", {state: {mainType: "userAddress"}})}>배송지</button>
-            <button onClick={() => navigate("/user/MyPage", {state: {mainType: "userOrderList"}})}>주문 내역</button>
-            {mypageTab(mainType)}
+            <Box sx={{width: '100%'}}>
+                <TabContext value={mainType}>
+                    <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
+                        <TabList centered aria-label="lab API tabs example">
+                            <Tab label="Info" value="userInfo" onClick={() => navigate("/user/MyPage", {state: {mainType: "userInfo"}})}/>
+                            <Tab label="Address" value="userAddress" onClick={() => navigate("/user/MyPage", {state: {mainType: "userAddress"}})}/>
+                            <Tab label="Order List" value="userOrderList" onClick={() => navigate("/user/MyPage", {state: {mainType: "userOrderList"}})}/>
+                        </TabList>
+                    </Box>
+                    <TabPanel value="userInfo" ><UserInfo subType={subType}/></TabPanel>
+                    <TabPanel value="userAddress" ><UserAddress /></TabPanel>
+                    <TabPanel value="userOrderList" ><UserOrderList /></TabPanel>
+                </TabContext>
+            </Box>
         </>
     )
 }

@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { connect, shallowEqual, useSelector } from "react-redux";
+
 import { userCk, userLogin  } from "../../modules/user";
 import { cartSelect } from "../../modules/cart";
 import { setToken } from "../../modules/token";
-import { useNavigate } from "react-router";
+
+import { Button, TextField } from "@mui/material";
 
 const ReduxState = (state) => ({
     userId: state.userId,
@@ -62,15 +65,9 @@ function Login({userCk, userLogin, setToken, cartSelect}) {
         <>
             <h1>로그인</h1>
             <form onSubmit={onSubmitHandler}>
-                <div>
-                    <label>아이디</label>
-                    <input type="text" value={userId} onChange={onUserIdHandler}/>
-                </div>
-                <div>
-                    <label>패스워드</label>
-                    <input type="password" value={userPwd} onChange={onUserPwdHandler}/>
-                </div>     
-                <button type="submit" onClick={() => userCk(userId, userPwd)}>로그인</button>
+                <TextField type="text" label="ID" variant="standard" value={userId} onChange={onUserIdHandler} style={{display: "block"}} />
+                <TextField type="password" label="Password" variant="standard" value={userPwd} onChange={onUserPwdHandler} style={{display: "block"}} />
+                <Button type="submit" variant="outlined" color="success" onClick={() => userCk(userId, userPwd)} style={{marginTop: "20px", width: "200px"}}>로그인</Button>
             </form>
             <div onChange={onChangeMsg}>{msg}</div>
         </>

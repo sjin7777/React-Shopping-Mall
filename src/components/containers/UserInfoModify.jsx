@@ -3,6 +3,7 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { userDelete, userModify } from "../../modules/user";
 import { delToken } from "../../modules/token";
+import { Button, TextField } from "@mui/material";
 
 function UserInfoModify() {
     const dispatch = useDispatch();
@@ -39,23 +40,14 @@ function UserInfoModify() {
 
     return(
         <>
-            <form onSubmit={onSubmitHandler} style={{paddingTop: "30px"}}>
             <h4>비밀번호 변경</h4>  
-                <div>
-                    <label>아이디</label>
-                    <input type="text" value={storeUserId} disabled={true}/>
-                </div>
-                <div>
-                    <label>비밀번호</label>
-                    <input type="password" value={userPwd} onChange={(e) => setUserPwd(e.target.value)} />
-                </div>
-                <div>
-                    <label>비밀번호 확인</label>
-                    <input type="password" value={userPwdCk} onChange={(e) => setUserPwdCk(e.target.value)} />
-                </div>
-                <button type="submmit">변경</button>
+            <form onSubmit={onSubmitHandler} >
+                <TextField type="text" label="ID" variant="standard" value={storeUserId} disabled={true} />
+                <TextField type="password" label="Password" variant="standard" value={userPwd} onChange={(e) => setUserPwd(e.target.value)} style={{display: "block"}} />
+                <TextField type="password" label="Password Check" variant="standard" value={userPwdCk} onChange={(e) => setUserPwdCk(e.target.value)} style={{display: "block"}} />
+                <Button type="submit" variant="outlined" color="success" style={{marginTop: "20px", width: "200px"}}> 변경</Button>
             </form>
-            <button onClick={onUserDelHandler}>탈퇴하기</button>
+            <Button variant="outlined" color="error" onClick={onUserDelHandler} style={{marginTop: "10px", width: "200px"}}> 탈퇴하기</Button>
         </>
     )
 }

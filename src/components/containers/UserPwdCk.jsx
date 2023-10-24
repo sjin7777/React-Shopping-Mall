@@ -2,6 +2,7 @@ import { useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { userCk, userLogin } from "../../modules/user";
 import { useNavigate } from "react-router";
+import { Button, TextField } from "@mui/material";
 
 function UserPwdCk() {
     const dispatch = useDispatch();
@@ -11,11 +12,12 @@ function UserPwdCk() {
     const [ userPwd, setUserPwd ] = useState("");
     const onSubmitHandler = (e) => {
         e.preventDefault();
-        if(!storeUserPwd) {
+        if(!userPwd) {
+            alert("비밀번호를 입력해주세요")
+        } else if(!storeUserPwd) {
             alert("비밀번호가 일치하지 않습니다");
             setUserPwd("");
         } else{
-            console.log("일치");
             dispatch(userLogin(storeUserId, userPwd))
             navigate("/user/MyPage",  {state: {mainType: "userInfo", subType: "userInfoModify"}})
         }
@@ -24,15 +26,9 @@ function UserPwdCk() {
         <>
             <h4>비밀번호를 입력해주세요.</h4>
             <form onSubmit={onSubmitHandler}>
-                <div>
-                    <label>아이디</label>
-                    <input type="text" value={storeUserId} disabled={true}/>
-                </div>
-                <div>
-                    <label>패스워드</label>
-                    <input type="password" value={userPwd} onChange={(e) => setUserPwd(e.target.value)}/>
-                </div>
-                <button type="submit" onClick={() => dispatch(userCk(storeUserId, userPwd))}>확인</button>
+                <TextField type="text" label="ID" variant="standard" value={storeUserId} disabled={true}/>
+                <TextField type="password" label="Password" variant="standard" value={userPwd} onChange={(e) => setUserPwd(e.target.value)} style={{display: "block"}} />
+                <Button type="submit" variant="outlined" color="success" onClick={() => dispatch(userCk(storeUserId, userPwd))} style={{marginTop: "20px", width: "200px"}}>확인</Button>
             </form>
         </>
     )

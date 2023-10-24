@@ -1,8 +1,13 @@
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+
 import { delToken } from "../../modules/token";
 import { userLogout } from "../../modules/user";
 import { cartRemove } from "../../modules/cart";
+
+import { Button, ButtonGroup } from "@mui/material";
+import IconCart from "../ui/icon/IconCart";
+import IconHouse from "../ui/icon/IconHouse";
 
 function Header() {
     const dispatch = useDispatch();
@@ -10,7 +15,9 @@ function Header() {
     const storeToken = useSelector((state) => ({ token: state.token}), shallowEqual).token;
     const storeIsLogin = storeToken.isLogin;
     const storeUserId = (storeIsLogin) ? storeToken.userId : null;
-
+    
+    const storeCart = useSelector((state) => ({ cart: state.cart }), shallowEqual).cart[storeUserId];
+    
     const navGuest = (storeIsLogin) ? {display: "none"} : {display: "inline"};
     const navUser = (storeIsLogin) ? {display: "inline"} : {display: "none"};
     
@@ -26,17 +33,22 @@ function Header() {
     return(
         <>
             <header>
-                <button onClick={() => navigate("/")}>Home</button>
+                <Button variant="text" onClick={() => navigate("/")}><IconHouse /></Button>
+                
             </header>
             <nav style={navGuest}>
-                <button onClick={() => navigate("/Join")}>회원가입</button>
-                <button onClick={() => navigate("/Login")}>로그인</button>
+                <ButtonGroup variant="contained" aria-label="outlined primary button group">
+                    <Button onClick={() => navigate("/Join")}>Sign up</Button>
+                    <Button onClick={() => navigate("/Login")}>Sign in</Button>
+                </ButtonGroup>
             </nav>
             <nav style={navUser}>
                 <span>회원 {storeUserId}님</span>
-                <button onClick={() => navigate("/user/MyPage", {state: {mainType: "userInfo", subType: null}})}>마이페이지</button>
-                <button onClick={() => navigate("/user/CartList")}>장바구니</button>
-                <button onClick={onLogoutHandler}>로그아웃</button>
+                <ButtonGroup variant="contained" aria-label="outlined primary button group">
+                    <Button onClick={() => navigate("/user/MyPage", {state: {mainType: "userInfo", subType: null}})}>MyPage</Button>
+                    <Button onClick={() => navigate("/user/CartList")}>{IconCart(storeCart.length)}</Button>
+                    <Button onClick={onLogoutHandler}>Logout</Button>
+                </ButtonGroup>
             </nav>
         
         </>

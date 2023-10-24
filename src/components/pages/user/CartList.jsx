@@ -82,7 +82,7 @@ function CartList({cartItemCountUp, cartItemCountDown, cartDelItem, orderByItem}
                 <button onClick={onOrderByHandler}>구매하기</button>
             </div>
 
-            {items.map((item) => (
+            { items.length > 0 && items.map((item) => (
                 <div key={item.id} style={{border: "1px solid black"}}>
                     <div>
                         <input type="checkbox" checked={checkedList.some((ckId) => ckId === item.id)} onChange={(e) => onCheckBoxHandler(e, item.id)}/>
@@ -100,6 +100,7 @@ function CartList({cartItemCountUp, cartItemCountDown, cartDelItem, orderByItem}
                     </div>
                 </div>
             ))}
+            { (items.length === 0) && <div>장바구니가 비어있습니다</div> }
             
         </>
     )
