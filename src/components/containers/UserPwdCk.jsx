@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { userCk } from "../../modules/user";
+import { userCk, userLogin } from "../../modules/user";
 import { useNavigate } from "react-router";
 
 function UserPwdCk() {
@@ -16,7 +16,8 @@ function UserPwdCk() {
             setUserPwd("");
         } else{
             console.log("일치");
-            navigate("/user/MyPage")
+            dispatch(userLogin(storeUserId, userPwd))
+            navigate("/user/MyPage",  {state: {mainType: "userInfo", subType: "userInfoModify"}})
         }
     }
     return(

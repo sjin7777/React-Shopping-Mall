@@ -22,7 +22,8 @@ function PurchaseOrder() {
     const isChk1 = useRef(false);
     const isChk2 = useRef(false);
     const { storeUserId, orderItemList } = useLocation().state;
-    const storeUserAddress = useSelector((state) => ({user: state.user}), shallowEqual).user.userInfo.address
+    const storeUser = useSelector((state) => ({user: state.user}), shallowEqual).user.userInfo
+    const storeUserAddress = (Array.isArray(storeUser)) ? storeUser[0].address : storeUser.address;
 
     let total = 0;
     orderItemList.map((item) => total += item.price * item.itemCount)
@@ -45,7 +46,7 @@ function PurchaseOrder() {
                 <div>배송지</div>
                 <div>{storeUserAddress}</div>
                 <div>
-                    <button type="button" onClick={() => navigate("/user/MyPage", { state: {type: "userAddress", subType: null} })}>{storeUserAddress ? "배송지 변경" : "배송지 등록"}</button>
+                    <button type="button" onClick={() => navigate("/user/MyPage", { state: {mainType: "userAddress", subType: null} })}>{storeUserAddress ? "배송지 변경" : "배송지 등록"}</button>
                 </div>
             </div>
             <div>

@@ -34,7 +34,7 @@ function Header() {
             </nav>
             <nav style={navUser}>
                 <span>회원 {storeUserId}님</span>
-                <button onClick={() => navigate("/user/MyPage", {state: {type: "userInfo", subType: null}})}>마이페이지</button>
+                <button onClick={() => navigate("/user/MyPage", {state: {mainType: "userInfo", subType: null}})}>마이페이지</button>
                 <button onClick={() => navigate("/user/CartList")}>장바구니</button>
                 <button onClick={onLogoutHandler}>로그아웃</button>
             </nav>

@@ -1,13 +1,18 @@
 import UserPwdCk from "./UserPwdCk";
 import UserInfoModify from "./UserInfoModify";
 
-function UserInfo() {
-
-
+function UserInfo({subType}) {
+    const userInfoSet = (subType) => {
+        switch(subType) {
+            case "userInfoModify":
+                return <UserInfoModify />
+            default:
+                return <UserPwdCk />
+        }
+    }
     return(
         <>
-            <UserPwdCk />
-            <UserInfoModify />
+            {userInfoSet(subType)}
         </>
     )
 }
