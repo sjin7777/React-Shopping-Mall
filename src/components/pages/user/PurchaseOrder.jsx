@@ -25,8 +25,10 @@ function PurchaseOrder() {
     const storeUser = useSelector((state) => ({user: state.user}), shallowEqual).user.userInfo
     const storeUserAddress = (Array.isArray(storeUser)) ? storeUser[0].address : storeUser.address;
 
-    let total = 0;
-    orderItemList.map((item) => total += item.price * item.itemCount)
+    let sum = 0;
+    let fee = 3000;
+    const orderState = "주문 완료";
+    orderItemList.map((item) => sum += item.price * item.itemAmount)
 
     const onSubmitHandler = (e) => {
         if(!storeUserAddress) alert("배송지를 등록해주세요")
@@ -36,7 +38,7 @@ function PurchaseOrder() {
         e.preventDefault();
     }
     const onOrderHandler = () => {
-        dispatch(orderSheet(storeUserId, orderItemList, getCurrentDate(new Date()), storeUserAddress, total+3000));
+        dispatch(orderSheet(storeUserId, orderItemList, orderState, getCurrentDate(new Date()), storeUserAddress, sum, fee, sum + fee));
         navigate("/user/OrderHistory", {state: getCurrentDate(new Date())});
     }
 
@@ -58,16 +60,16 @@ function PurchaseOrder() {
                         </div>
                         <div>
                             <img alt={item.title} src={item.image} style={{width: "50px", height: "50px"}}/>
-                            <div>가격: {item.price * item.itemCount}</div>
-                            <div>수량: {item.itemCount} </div>
+                            <div>가격: {sum}</div>
+                            <div>수량: {item.itemAmount} </div>
                         </div>
                     </div>
                 ))}
             </div>
             <div>
-                <div>상품금액: {total}</div>
-                <div>배송비: 3000</div>
-                <div>합계: {total + 3000}</div>
+                <div>상품금액: {sum}</div>
+                <div>배송비: {fee}</div>
+                <div>합계: {sum + fee}</div>
             </div>
             <div>
                 <input type="checkbox" ref={isChk1} />

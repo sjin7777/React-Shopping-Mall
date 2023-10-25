@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 import { orderByInit } from "../../modules/order";
 
 import { Button, TextField } from "@mui/material";
+import TransitionsModal from "../ui/Modal";
 
 
 
@@ -27,18 +28,22 @@ let isIdCk = false;
 function Join({userIdCk, userJoin, cartInit, orderByInit}) {
     const navigate = useNavigate();
     const storeUserIdCk = useSelector((state) => ({user: state.user.userInfo}), shallowEqual).user.userId;
-
+    
     const [ userId, setUserId ] = useState("");
     const [ userPwd, setUserPwd ] = useState("");
     const [ userPwdCk, setUserPwdCk ] = useState("");
     const [ msg, setMsg ] = useState("");
+    const [ modal, setModal ] = useState(false);
+    const onCloseModal = () => setModal(false);
+
     
     const onUserPwdHandler = (e) => setUserPwd(e.target.value);
     const onUwerPwdCkHandler = (e) => setUserPwdCk(e.target.value);
-    const onChangeMsg = (e) => setMsg(e.target.value);
+    // const onChangeMsg = (e) => setMsg(e.target.value);
     const onUserIdHandler = (e) => {
         setUserId(e.target.value);
         isIdCk = false;
+        setMsg("");
     }
 
     useEffect(() => {
@@ -54,13 +59,14 @@ function Join({userIdCk, userJoin, cartInit, orderByInit}) {
 
     const onUserIdDuplicatedCk = () => {
         isIdCk = true;
+        setModal(true)
         userIdCk(userId)
     }
     
     
     const onSubmitHandler = (e) => {
         if(!userId){
-            setMsg('아이디를 입력해주세요')
+            setMsg('아이디를 입력해주세요');
         }else if(!isIdCk) {
             setMsg('아이디 체크는 필수입니다')
         } else if(!userPwd) {
@@ -71,15 +77,17 @@ function Join({userIdCk, userJoin, cartInit, orderByInit}) {
             setMsg('패스워드와 패스워드 확인의 값이 일치하지 않습니다.');
             setUserPwdCk("");
         } else {
-            setMsg("가입 완료")
+            setMsg("가입되었습니다. 로그인해주세요.")
             userJoin(userId, userPwd);
-            cartInit(userId)
-            orderByInit(userId)
-            navigate("/login")
-            isIdCk = false
+            cartInit(userId);
+            orderByInit(userId);
+            setTimeout(() => navigate("/login"), [1400])
+            
+            isIdCk = false;
         }
         e.preventDefault();
     }
+
     
     return (
         <>
@@ -89,9 +97,10 @@ function Join({userIdCk, userJoin, cartInit, orderByInit}) {
                 <Button type="button" variant="outlined" onClick={onUserIdDuplicatedCk} disabled={(isIdCk && !storeUserIdCk && userId !== "")} >중복확인</Button>
                 <TextField type="password" label="Password" variant="standard" value={userPwd} onChange={onUserPwdHandler} style={{display: "block"}} />
                 <TextField type="password" label="Password Check" variant="standard" value={userPwdCk} onChange={onUwerPwdCkHandler} style={{display: "block"}} />
-                <Button type="submit" variant="outlined" color="success" style={{marginTop: "20px", width: "200px"}} >가입</Button>
+                <Button type="submit" variant="outlined" color="success" style={{marginTop: "20px", width: "200px"}} onClick={() => setModal(true)}>가입</Button>
             </form>
-            <div onChange={onChangeMsg}>{msg}</div>
+            <TransitionsModal modal={modal} onCloseModal={onCloseModal} msg={msg}/>
+            {/* <div onChange={onChangeMsg}>{msg}</div> */}
         </>
     )
 }

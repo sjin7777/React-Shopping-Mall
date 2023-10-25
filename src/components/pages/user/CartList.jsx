@@ -1,8 +1,18 @@
 import { useState, useEffect } from "react";
 import { connect, shallowEqual, useSelector } from "react-redux";
-import { cartItemCountUp, cartItemCountDown, cartDelItem } from "../../../modules/cart";
+import { cartItemAmountUp, cartItemAmountDown, cartDelItem } from "../../../modules/cart";
 import { orderByItem } from "../../../modules/order";
 import { useNavigate } from "react-router";
+import IconLoading from "../../ui/icons/IconLoading";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import { Button, TextField } from '@mui/material';
+import { CheckBox } from "@mui/icons-material";
 
 const url = `https://fakestoreapi.com/products`;
 
@@ -10,24 +20,25 @@ const url = `https://fakestoreapi.com/products`;
 const ReduxState = (state) => ({
     userId: state.userId,
     itemId: state.itemId,
-    itemCount: state.itemCount
+    itemAmount: state.itemAmount
 })
 
 const ReduxAction = (dispatch) => ({
-    cartItemCountUp: (userId, itemId, itemCount) => dispatch(cartItemCountUp(userId, itemId, itemCount)),
-    cartItemCountDown: (userId, itemId, itemCount) => dispatch(cartItemCountDown(userId, itemId, itemCount)),
+    cartItemAmountUp: (userId, itemId, itemAmount) => dispatch(cartItemAmountUp(userId, itemId, itemAmount)),
+    cartItemAmountDown: (userId, itemId, itemAmount) => dispatch(cartItemAmountDown(userId, itemId, itemAmount)),
     cartDelItem: (userId, itemId) => dispatch(cartDelItem(userId, itemId)),
     orderByItem: (userId, itemList) => dispatch(orderByItem(userId, itemList))
 })
 
 
-function CartList({cartItemCountUp, cartItemCountDown, cartDelItem, orderByItem}) {
+function CartList({cartItemAmountUp, cartItemAmountDown, cartDelItem, orderByItem}) {
     const navigate = useNavigate();
     const storeToken = useSelector((state) => ({ token: state.token }), shallowEqual).token;
     const storeUserId = (storeToken.isLogin) ? storeToken.userId : '';
     const storeUserCart = useSelector((state) => ({ cart: state.cart }), shallowEqual).cart[storeUserId];
     
     const [ items, setItems ] = useState([]);
+    const [ isLoading, setIsLoading ] = useState(true);
     const [ checkedList, setCheckedList ] = useState([]);
     const [ isAllChecked, setIsAllChecked ] = useState(false);
     const [ orderItemList, setOrderItemList ] = useState([]);
@@ -38,7 +49,8 @@ function CartList({cartItemCountUp, cartItemCountDown, cartDelItem, orderByItem}
         .then((dataArr) => {                
             dataArr = dataArr.filter((data) => storeUserCart.some((storeCart) => (data.id === storeCart.itemId)) );
             dataArr = dataArr.map((data) => Object.assign(data, storeUserCart.find((storeCart) => storeCart.itemId === data.id)))
-            setItems(dataArr)
+            setItems(dataArr);
+            setIsLoading(false)
         })
     }, [storeUserCart]);
 
@@ -68,154 +80,81 @@ function CartList({cartItemCountUp, cartItemCountDown, cartDelItem, orderByItem}
     }
     
     const onOrderByHandler = () => {
-        orderByItem(storeUserId, orderItemList);
-        navigate("/user/PurchaseOrder", {state: {storeUserId, orderItemList}});
+        if(orderItemList.length !== 0) {
+            orderByItem(storeUserId, orderItemList);
+            navigate("/user/PurchaseOrder", {state: {storeUserId, orderItemList}});
+        }
     }
+
+
+
+    // const itemList = items.map((item) => (
+    //     <div key={item.id} style={{border: "1px solid black"}}>
+    //         <div>
+    //             <input type="checkbox" checked={checkedList.some((ckId) => ckId === item.id)} onChange={(e) => onCheckBoxHandler(e, item.id)}/>
+    //             <span>{item.title}</span> 
+    //         </div>
+    //         <div>
+    //             <img alt={item.title} src={item.image} style={{width: "50px", height: "50px"}}/>
+    //             <span>가격: {item.price * item.itemAmount}</span>
+    //         </div>
+    //         <div>
+    //             <span>수량</span>
+    //             <button onClick={() => cartItemAmountDown(storeUserId, item.id, item.itemAmount)} disabled={item.itemAmount <= 1}>-</button>
+    //             <input type="number" value={item.itemAmount} onChange={(e) => (e.current.value)} min="1" max="10" style={{width: "50px"}} />
+    //             <button onClick={() => cartItemAmountUp(storeUserId, item.id, item.itemAmount)} disabled={item.itemAmount >= 10}>+</button>
+    //         </div>
+    //     </div>
+    // ));
 
 
     return (
         <>
             <h1> {storeUserId}의 장바구니</h1>
-            <div>
-                <input type="checkbox" checked={isAllChecked} onChange={(e) => onAllCheckBoxHandler(e)}/>
-                <button onClick={onCartDelHandler}>삭제하기</button>
-                <button onClick={onOrderByHandler}>구매하기</button>
-            </div>
-
-            { items.length > 0 && items.map((item) => (
-                <div key={item.id} style={{border: "1px solid black"}}>
-                    <div>
-                        <input type="checkbox" checked={checkedList.some((ckId) => ckId === item.id)} onChange={(e) => onCheckBoxHandler(e, item.id)}/>
-                        <span>{item.title}</span> 
-                    </div>
-                    <div>
-                        <img alt={item.title} src={item.image} style={{width: "50px", height: "50px"}}/>
-                        <span>가격: {item.price * item.itemCount}</span>
-                    </div>
-                    <div>
-                        <span>수량</span>
-                        <button onClick={() => cartItemCountDown(storeUserId, item.id, item.itemCount)} disabled={item.itemCount <= 1}>-</button>
-                        <input type="number" value={item.itemCount} onChange={(e) => (e.current.value)} min="1" max="10" style={{width: "50px"}} />
-                        <button onClick={() => cartItemCountUp(storeUserId, item.id, item.itemCount)} disabled={item.itemCount >= 10}>+</button>
-                    </div>
-                </div>
-            ))}
-            { (items.length === 0) && <div>장바구니가 비어있습니다</div> }
             
+            
+            { isLoading 
+                ? <IconLoading /> 
+                : <TableContainer component={Paper}>
+                    <Table aria-label="collapsible table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>
+                                    <input type="checkbox" checked={isAllChecked} onChange={onAllCheckBoxHandler}/>
+                                </TableCell>
+                                <TableCell></TableCell>
+                                <TableCell></TableCell>
+                                <TableCell></TableCell>
+                                <TableCell><Button onClick={onOrderByHandler}>구매하기</Button></TableCell>
+                                <TableCell><Button onClick={onCartDelHandler}>삭제하기</Button></TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {items.map((item) => (
+                            <TableRow key={item.id}>
+                                <TableCell><input type="checkbox" checked={checkedList.some((ckId) => ckId === item.id)} onChange={(e) => onCheckBoxHandler(e, item.id)}/></TableCell>
+                                <TableCell component="th" scope="row">
+                                    <img alt={item.title} src={item.image} style={{width: "50px", height: "50px"}}/>
+                                </TableCell>
+                                <TableCell >{item.title}</TableCell>
+                                <TableCell align="right">
+                                    <Button onClick={() => cartItemAmountDown(storeUserId, item.id, item.itemAmount)} disabled={item.itemAmount <= 1}>-</Button>
+                                    <span type="text" value={item.itemAmount} onChange={(e) => (e.current.value)} min="1" max="10" style={{width: "50px"}}>{item.itemAmount}</span>
+                                    <Button onClick={() => cartItemAmountUp(storeUserId, item.id, item.itemAmount)} disabled={item.itemAmount >= 10}>+</Button>
+                                </TableCell>
+                                <TableCell align="right">
+                                    {Math.round(item.itemAmount * item.price * 100) / 100}
+                                </TableCell>
+                                <TableCell>
+                                    <Button onClick={() => cartDelItem(storeUserId, item.id)}>X</Button>
+                                </TableCell>
+                            </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>  
+            }
         </>
     )
 }
 export default connect(ReduxState, ReduxAction)(CartList);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function CartList({cartItemCountUp, cartItemCountDown, cartDelItem, orderByItem}) {
-//     const navigate = useNavigate();
-//     const storeToken = useSelector((state) => ({ token: state.token }), shallowEqual).token;
-//     const storeUserId = (storeToken.isLogin) ? storeToken.userId : '';
-//     const storeUserCart = useSelector((state) => ({ cart: state.cart }), shallowEqual).cart[storeUserId];
-    
-//     const [ items, setItems ] = useState([]);
-//     const [ checkedList, setCheckedList ] = useState([]);
-//     const [ isAllChecked, setIsAllChecked ] = useState(false);
-    
-//     useEffect(() => {
-//         fetch(url, {method: "GET"})
-//         .then((response) => response.json())
-//         .then((dataArr) => {                
-//             dataArr = dataArr.filter((data) => storeUserCart.some((storeCart) => (data.id === storeCart.itemId)) );
-//             dataArr = dataArr.map((data) => Object.assign(data, storeUserCart.find((storeCart) => storeCart.itemId === data.id)))
-//             setItems(dataArr)
-//         })
-//     }, [storeUserCart])
-
-//     useEffect(() => {
-//         setIsAllChecked((checkedList.length > 0) && ((checkedList.length) === (items.length)));
-
-//         console.log('checkedList >>>>>>>>>>>> ', checkedList)
-//     }, [cartDelItem, checkedList, setCheckedList, isAllChecked, setIsAllChecked, items ])
-
-
-//     const onCheckBoxHandler = (e, item) => (e.currentTarget.checked) ? setCheckedList([...checkedList, item]) : setCheckedList(checkedList.filter((checked) => checked.id !== item.id));
-
-//     const onAllCheckBoxHandler = (e) => {
-//         setIsAllChecked(e.currentTarget.value);
-//         (!isAllChecked) ? items.map((item) => (!checkedList.some((checked) => checked.id === item.id)) && setCheckedList(items)) : setCheckedList([]);
-//     }
-
-//     const onCartDelHandler = () => {
-//         checkedList.map((item) => cartDelItem(storeUserId, item.itemId))
-//         setCheckedList([]);
-//     }
-
-//     const onOrderByHandler = () => {
-//         (items.map((item) => checkedList.forEach((checked) => ((checked.id === item.id) ? {...checked, itemCount: item.itemCount} : checked))));
-        
-//         console.log('11checkedList >>>>>>>>>>>> ', checkedList)
-        
-//         console.log('order >> ', checkedList.map((checked) => items.map((item) => (checked.id === item.id) ? {...checked, itemCount: item.itemCount} : checked)))
-//         orderByItem(storeUserId, checkedList);
-//         navigate("/user/PurchaseOrder", {state: {storeUserId, checkedList}});
-//     }
-
-//     // const onItemCountUp = (itemId, itemCount) => {
-//     //     cartItemCountUp(storeUserId, itemId, itemCount)
-//     // }
-
-//     // const onItemCountDown = (itemId, itemCount) => {
-//     //     setCheckedList(checkedList.map((checked) => (checked.id === itemId) ? {...checked, itemCount: itemCount} : checked));
-//     //     cartItemCountDown(storeUserId, itemId, itemCount)
-//     // }
-
-//     const onChangeHandler = (value, itemId, itemCount) => {
-//         setCheckedList(checkedList.map((checked) => (checked.id === itemId) ? {...checked, itemCount: itemCount} : checked));
-//         console.log('value >>>>>>>> ', value)
-//         console.log('itemId >>>>>>>> ', itemId)
-//         console.log('itemCount >>>>>>>> ', itemCount)
-//     }
-//     return (
-//         <>
-//             <h1> {storeUserId}의 장바구니</h1>
-//             <div>
-//                 <input type="checkbox" checked={isAllChecked} onChange={(e) => onAllCheckBoxHandler(e)}/>
-//                 <button onClick={onCartDelHandler}>삭제하기</button>
-//                 <button onClick={onOrderByHandler}>구매하기</button>
-//             </div>
-//             {items.map((item) => (
-            
-//                 <div key={item.id} style={{border: "1px solid black"}}>
-//                     <div>
-//                         <input type="checkbox" checked={checkedList.some((checked) => checked.id === item.id)} onChange={(e) => onCheckBoxHandler(e, item)}/>
-//                         <span>{item.title}</span> 
-//                     </div>
-//                     <div>
-//                         <img alt={item.title} src={item.image} style={{width: "50px", height: "50px"}}/>
-//                         <span>가격: {item.price * item.itemCount}</span>
-//                     </div>
-//                     <div>
-//                         <span>수량</span>
-//                         <button onClick={() => cartItemCountDown(storeUserId, item.id, item.itemCount)} disabled={item.itemCount <= 1}>-</button>
-//                         <input type="number" value={item.itemCount} onChange={(e) => onChangeHandler(e.target.value, item.id, item.itemCount)} min="1" max="10" style={{width: "50px"}} />
-//                         <button onClick={() => cartItemCountUp(storeUserId, item.id, item.itemCount)} disabled={item.itemCount >= 10}>+</button>
-//                     </div>
-//                 </div>
-//             ))}
-//         </>
-//     )
-// }
-// export default connect(ReduxState, ReduxAction)(CartList);

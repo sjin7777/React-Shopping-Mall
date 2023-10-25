@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import IconLoading from "../ui/icon/IconLoading";
+import IconLoading from "../ui/icons/IconLoading";
 
 const url = `https://fakestoreapi.com/products`;
 
@@ -26,7 +26,7 @@ function ProductList() {
             <h5>{item.price}</h5>
         </div>
     ));
-    
+
     return (
         <>
             {isLoading ? <IconLoading /> : itemList}

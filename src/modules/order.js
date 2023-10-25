@@ -28,13 +28,16 @@ export const orderByItem = (userId, itemList, orderDate) => ({
     }
 })
 
-export const orderSheet = (userId, itemList, orderDate, address, total) => ({
+export const orderSheet = (userId, itemList, orderState, orderDate, address, sum, fee, total) => ({
     type: ORDER_SHEET,
     payload: {
         userId,
         itemList,
+        orderState,
         orderDate,
         address,
+        sum,
+        fee,
         total
     }
 })
@@ -50,13 +53,19 @@ function order(state=initialState, action) {
                 orderList: state.orderList
             }
         case ORDER_BY_ITEM:
-            state.orderList[action.payload.userId] = state.orderList[action.payload.userId].concat({['ORDER_' + action.payload.userId + state.orderList[action.payload.userId].length] : action.payload.itemList})
+            state.orderList[action.payload.userId] 
+                = state.orderList[action.payload.userId]
+                    .concat({['ORDER_' + action.payload.userId + state.orderList[action.payload.userId].length] 
+                    : action.payload.itemList})
             return {
                 ...state,
                 orderList: state.orderList
             }
         case ORDER_SHEET:
-            state.orderSheetList[action.payload.userId] = state.orderSheetList[action.payload.userId].concat({[action.payload.userId + '_' + action.payload.orderDate] : Object.assign({orderDate: action.payload.orderDate}, {address: action.payload.address}, {total: action.payload.total}, {itemList: [action.payload.itemList]})})
+            state.orderSheetList[action.payload.userId] 
+                = state.orderSheetList[action.payload.userId]
+                    .concat({[action.payload.orderDate + '_' + action.payload.userId] 
+                    : Object.assign({orderState: action.payload.orderState}, {orderDate: action.payload.orderDate}, {address: action.payload.address}, {sum: action.payload.sum}, {fee: action.payload.fee}, {total: action.payload.total}, {itemList: [action.payload.itemList]})})
             return {
                 ...state,
                 orderSheetList: state.orderSheetList
