@@ -8,7 +8,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
+// import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -28,6 +28,7 @@ function Row({orderSheet}) {
                 </TableCell>
                 <TableCell component="th" scope="row">{orderSheet.address}</TableCell>
                 <TableCell align="right">{orderDate(orderSheet.orderDate)}</TableCell>
+                <TableCell align="right">{orderSheet.sum}</TableCell>
                 <TableCell align="right">{orderSheet.fee}</TableCell>
                 <TableCell align="right">{orderSheet.total}</TableCell>
                 <TableCell align="right">{orderSheet.orderState}</TableCell>
@@ -36,9 +37,9 @@ function Row({orderSheet}) {
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={10}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box sx={{ margin: 1 }}>
-                        <Typography variant="h6" gutterBottom component="div">
+                        {/* <Typography variant="h6" gutterBottom component="div" textAlign="center">
                             Products
-                        </Typography>
+                        </Typography> */}
                         <Table size="small" aria-label="purchases">
                             <TableHead>
                             <TableRow>
@@ -82,6 +83,7 @@ export default function TableOrder({orderSheetList}) {
                     <TableCell />
                     <TableCell>배송지</TableCell>
                     <TableCell align="right">주문일자</TableCell>
+                    <TableCell align="right">상품금액</TableCell>
                     <TableCell align="right">배송비</TableCell>
                     <TableCell align="right">합계</TableCell>
                     <TableCell align="right">주문상태</TableCell>

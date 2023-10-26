@@ -44,7 +44,7 @@ function ProductDetail({cartAddItem, cartDelItem}) {
             <h1>상품 {id}번 상세페이지</h1>
             <div>
                 <h3>{title}</h3>
-                <img src={image} alt={title} style={{width: "200px", height: "200px"}}/>
+                <img src={image} alt={title} style={{width: "200px"}}/>
                 <button onClick={onCartHandler} style={storeUserId ? {display: "inline"} : {display: "none"}}>{(inCart) ? <RemoveShoppingCartIcon /> : <AddShoppingCartIcon />}</button>
                 <h5>{price}</h5>
                 <p>{rating.rate}</p>

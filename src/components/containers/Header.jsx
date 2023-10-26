@@ -8,6 +8,7 @@ import { cartRemove } from "../../modules/cart";
 import { Button, ButtonGroup } from "@mui/material";
 import IconCart from "../ui/icons/IconCart";
 import IconHouse from "../ui/icons/IconHouse";
+import TypographyTheme from "../ui/TypographyTheme";
 
 function Header() {
     const dispatch = useDispatch();
@@ -42,7 +43,7 @@ function Header() {
                 </ButtonGroup>
             </nav>
             <nav style={navUser}>
-                <span>회원 {storeUserId}님</span>
+                <TypographyTheme text={storeUserId + '님'}/>
                 <ButtonGroup variant="contained" aria-label="outlined primary button group">
                     <Button onClick={() => navigate("/user/MyPage", {state: {mainType: "userInfo", subType: null}})}>MyPage</Button>
                     <Button onClick={() => navigate("/user/CartList")}><IconCart itemCount={storeUserCart.length}/></Button>

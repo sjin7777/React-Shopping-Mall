@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
 import IconLoading from "../ui/icons/IconLoading";
+import FlexWrap from "../ui/FlexWrap";
 
 const url = `https://fakestoreapi.com/products`;
 
 function ProductList() {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const [ items, setItems ] = useState([]);
     const [ isLoading, setLoading ] = useState(true); 
     
@@ -19,17 +20,17 @@ function ProductList() {
             .catch((error) => console.log(error));
     }, [])
     
-    const itemList = items.map((item) => (
-        <div key={item.id} onClick={() => navigate(`/ProductDetail/${item.id}`, {state: {item}})} style={{border: "2px solid black"}}>
-            <img src={item.image} alt={item.title} style={{width: "50px", height: "50px"}}/>
-            <h3>{item.title}</h3>
-            <h5>{item.price}</h5>
-        </div>
-    ));
+    // const itemList = items.map((item) => (
+    //     <div key={item.id} onClick={() => navigate(`/ProductDetail/${item.id}`, {state: {item}})} style={{border: "2px solid black"}}>
+    //         <img src={item.image} alt={item.title} style={{width: "50px", height: "50px"}}/>
+    //         <h3>{item.title}</h3>
+    //         <h5>{item.price}</h5>
+    //     </div>
+    // ));
 
     return (
         <>
-            {isLoading ? <IconLoading /> : itemList}
+            {isLoading ? <IconLoading /> : <FlexWrap items={items}/>}
         </>
     )
 }

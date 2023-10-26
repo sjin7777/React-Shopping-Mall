@@ -39,16 +39,15 @@ function UserInfoModify() {
     }
 
     return(
-        <>
-            <h4>비밀번호 변경</h4>  
+        <div style={{margin: "50px"}}>
             <form onSubmit={onSubmitHandler} >
-                <TextField type="text" label="ID" variant="standard" value={storeUserId} disabled={true} />
-                <TextField type="password" label="Password" variant="standard" value={userPwd} onChange={(e) => setUserPwd(e.target.value)} style={{display: "block"}} />
-                <TextField type="password" label="Password Check" variant="standard" value={userPwdCk} onChange={(e) => setUserPwdCk(e.target.value)} style={{display: "block"}} />
-                <Button type="submit" variant="outlined" color="success" style={{marginTop: "20px", width: "200px"}}> 변경</Button>
+                <TextField type="text" label="ID" variant="standard" value={storeUserId} disabled={true} style={{width: "300px"}} /><br/>
+                <TextField type="password" label="New Password" variant="standard" value={userPwd} onChange={(e) => setUserPwd(e.target.value)} style={{width: "300px"}} /><br />
+                <TextField type="password" label="New Password Check" variant="standard" value={userPwdCk} onChange={(e) => setUserPwdCk(e.target.value)} style={{width: "300px"}} /><br />
+                <Button type="submit" variant="outlined" color="success" style={{marginTop: "20px", width: "300px"}}> 변경</Button>
             </form>
-            <Button variant="outlined" color="error" onClick={onUserDelHandler} style={{marginTop: "10px", width: "200px"}}> 탈퇴하기</Button>
-        </>
+            <Button variant="outlined" color="error" onClick={onUserDelHandler} style={{marginTop: "10px", width: "300px"}}> 탈퇴하기</Button>
+        </div>
     )
 }
 export default UserInfoModify;

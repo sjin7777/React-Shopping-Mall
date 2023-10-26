@@ -112,7 +112,6 @@ function CartList({cartItemAmountUp, cartItemAmountDown, cartDelItem, orderByIte
         <>
             <h1> {storeUserId}의 장바구니</h1>
             
-            
             { isLoading 
                 ? <IconLoading /> 
                 : <TableContainer component={Paper}>

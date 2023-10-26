@@ -23,14 +23,13 @@ function UserPwdCk() {
         }
     }
     return(
-        <>
-            <h4>비밀번호를 입력해주세요.</h4>
-            <form onSubmit={onSubmitHandler}>
-                <TextField type="text" label="ID" variant="standard" value={storeUserId} disabled={true}/>
-                <TextField type="password" label="Password" variant="standard" value={userPwd} onChange={(e) => setUserPwd(e.target.value)} style={{display: "block"}} />
-                <Button type="submit" variant="outlined" color="success" onClick={() => dispatch(userCk(storeUserId, userPwd))} style={{marginTop: "20px", width: "200px"}}>확인</Button>
+        <div style={{margin: "50px"}}>
+            <form onSubmit={onSubmitHandler} >
+                <TextField type="text" label="ID" variant="standard" value={storeUserId} disabled={true} style={{width: "300px"}}/><br />
+                <TextField type="password" label="Password" variant="standard" value={userPwd} onChange={(e) => setUserPwd(e.target.value)} style={{width: "300px"}} /><br/>
+                <Button type="submit" variant="outlined" color="success" onClick={() => dispatch(userCk(storeUserId, userPwd))} style={{marginTop: "20px", width: "300px"}}>확인</Button>
             </form>
-        </>
+        </div>
     )
 }
 
