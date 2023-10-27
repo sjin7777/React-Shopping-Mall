@@ -11,7 +11,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Button, TextField } from '@mui/material';
+import { Button, TextField, Typography } from '@mui/material';
 import { CheckBox } from "@mui/icons-material";
 
 const url = `https://fakestoreapi.com/products`;
@@ -118,35 +118,29 @@ function CartList({cartItemAmountUp, cartItemAmountDown, cartDelItem, orderByIte
                     <Table aria-label="collapsible table">
                         <TableHead>
                             <TableRow>
-                                <TableCell>
-                                    <input type="checkbox" checked={isAllChecked} onChange={onAllCheckBoxHandler}/>
-                                </TableCell>
-                                <TableCell></TableCell>
-                                <TableCell></TableCell>
-                                <TableCell></TableCell>
-                                <TableCell><Button onClick={onOrderByHandler}>구매하기</Button></TableCell>
-                                <TableCell><Button onClick={onCartDelHandler}>삭제하기</Button></TableCell>
+                                <TableCell><input type="checkbox" checked={isAllChecked} onChange={onAllCheckBoxHandler}/></TableCell>
+                                <TableCell><Button onClick={onOrderByHandler}><Typography>구매하기</Typography></Button></TableCell>
+                                <TableCell><Button onClick={onCartDelHandler}><Typography>삭제하기</Typography></Button></TableCell>
+                                <TableCell />
+                                <TableCell />
+                                <TableCell />
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {items.map((item) => (
                             <TableRow key={item.id}>
                                 <TableCell><input type="checkbox" checked={checkedList.some((ckId) => ckId === item.id)} onChange={(e) => onCheckBoxHandler(e, item.id)}/></TableCell>
-                                <TableCell component="th" scope="row">
-                                    <img alt={item.title} src={item.image} style={{width: "50px", height: "50px"}}/>
-                                </TableCell>
+                                <TableCell component="th" scope="row"><img alt={item.title} src={item.image} style={{width: "50px", height: "50px"}}/></TableCell>
                                 <TableCell >{item.title}</TableCell>
                                 <TableCell align="right">
-                                    <Button onClick={() => cartItemAmountDown(storeUserId, item.id, item.itemAmount)} disabled={item.itemAmount <= 1}>-</Button>
-                                    <span type="text" value={item.itemAmount} onChange={(e) => (e.current.value)} min="1" max="10" style={{width: "50px"}}>{item.itemAmount}</span>
-                                    <Button onClick={() => cartItemAmountUp(storeUserId, item.id, item.itemAmount)} disabled={item.itemAmount >= 10}>+</Button>
+                                    <div style={{display: "flex"}}>
+                                        <Button onClick={() => cartItemAmountDown(storeUserId, item.id, item.itemAmount)} disabled={item.itemAmount <= 1}>-</Button>
+                                        <span type="text" value={item.itemAmount} onChange={(e) => (e.current.value)} min="1" max="10" style={{marginTop: "7px"}} >{item.itemAmount}</span>
+                                        <Button onClick={() => cartItemAmountUp(storeUserId, item.id, item.itemAmount)} disabled={item.itemAmount >= 10}>+</Button>
+                                    </div>
                                 </TableCell>
-                                <TableCell align="right">
-                                    {Math.round(item.itemAmount * item.price * 100) / 100}
-                                </TableCell>
-                                <TableCell>
-                                    <Button onClick={() => cartDelItem(storeUserId, item.id)}>X</Button>
-                                </TableCell>
+                                <TableCell align="right">{Math.round(item.itemAmount * item.price * 100) / 100}</TableCell>
+                                <TableCell><Button onClick={() => cartDelItem(storeUserId, item.id)}>X</Button></TableCell>
                             </TableRow>
                             ))}
                         </TableBody>

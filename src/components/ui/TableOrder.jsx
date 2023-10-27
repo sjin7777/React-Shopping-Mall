@@ -44,9 +44,9 @@ function Row({orderSheet}) {
                             <TableHead>
                             <TableRow>
                                 <TableCell />
-                                <TableCell>Name</TableCell>
+                                <TableCell>Product</TableCell>
                                 <TableCell align="right">Amount</TableCell>
-                                <TableCell align="right">Total price ($)</TableCell>
+                                <TableCell align="right">Price ($)</TableCell>
                             </TableRow>
                             </TableHead>
                             <TableBody>
