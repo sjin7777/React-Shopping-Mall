@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { orderSheet } from "../../../modules/order"
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow } from "@mui/material";
 
 
 const getCurrentDate = (now) => {
@@ -41,46 +42,105 @@ function PurchaseOrder() {
         dispatch(orderSheet(storeUserId, orderItemList, orderState, getCurrentDate(new Date()), storeUserAddress, sum, fee, sum + fee));
         navigate("/user/OrderHistory", {state: getCurrentDate(new Date())});
     }
-
+    
     return (
-        <form onSubmit={onSubmitHandler}>
-            <div>
-                <div>배송지</div>
-                <div>{storeUserAddress}</div>
+        <>
+            <form onSubmit={onSubmitHandler} style={{marginTop: "30px"}}>
                 <div>
-                    <button type="button" onClick={() => navigate("/user/MyPage", { state: {mainType: "userAddress", subType: null} })}>{storeUserAddress ? "배송지 변경" : "배송지 등록"}</button>
-                </div>
-            </div>
-            <div>
-                <div>상품</div>
-                {orderItemList.map((item) => (
-                    <div key={item.id} style={{border: "1px solid black"}}>
-                        <div>
-                            <span>{item.title}</span> 
-                        </div>
-                        <div>
-                            <img alt={item.title} src={item.image} style={{width: "50px", height: "50px"}}/>
-                            <div>가격: {sum}</div>
-                            <div>수량: {item.itemAmount} </div>
-                        </div>
+                    <div>배송지</div>
+                    <div>{storeUserAddress}</div>
+                    <div>
+                        <button type="button" onClick={() => navigate("/user/MyPage", { state: {mainType: "userAddress", subType: null} })}>{storeUserAddress ? "배송지 변경" : "배송지 등록"}</button>
                     </div>
-                ))}
-            </div>
-            <div>
-                <div>상품금액: {sum}</div>
-                <div>배송비: {fee}</div>
-                <div>합계: {sum + fee}</div>
-            </div>
-            <div>
-                <input type="checkbox" ref={isChk1} />
-                <span>사항 1</span>
-            </div>
-            <div>
-                <input type="checkbox" ref={isChk2} />
-                <span>사항 2</span>
-            </div>
-            <button type="submit">주문하기</button>
-        </form>
+                </div>
+                <TableContainer component={Paper}>
+                    <Table aria-label="collapsible table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell></TableCell>
+                                <TableCell></TableCell>
+                                <TableCell></TableCell>
+                                <TableCell align="right">수량</TableCell>
+                                <TableCell align="right">금액</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {orderItemList.map((item, index) => (
+                            <TableRow key={item.id}>
+                                <TableCell>{index + 1}</TableCell>
+                                <TableCell component="th" scope="row"><img alt={item.title} src={item.image} style={{width: "50px", height: "50px"}}/></TableCell>
+                                <TableCell >{item.title}</TableCell>
+                                <TableCell align="right">{item.itemAmount}</TableCell>
+                                <TableCell align="right">{Math.round(item.itemAmount * item.price * 100) / 100}</TableCell>
+                            </TableRow>
+                            ))}
+                        </TableBody>
+                        <TableFooter>
+                            <TableRow>
+                                <TableCell align="right"></TableCell>
+                                <TableCell align="right"></TableCell>
+                                <TableCell align="right">상품 금액: {sum}</TableCell>
+                                <TableCell align="right">배송비: {fee}</TableCell>
+                                <TableCell align="right">함계: {sum + fee}</TableCell>
+                            </TableRow>
+                        </TableFooter>
+                    </Table>
+                </TableContainer>  
+                <div style={{margin: "50px 20px"}}>
+                    <div>
+                        <input type="checkbox" ref={isChk1}/>
+                        <span>사항 1</span>
+                    </div>
+                    <div>
+                        <input type="checkbox" ref={isChk2} />
+                        <span>사항 2</span>
+                    </div>
+                </div>
+                <Button type="submit" variant="outlined" color="success">주문하기</Button>
+            </form>
+            
+            
+{/* 
+            <form onSubmit={onSubmitHandler}>
+                <div>
+                    <div>배송지</div>
+                    <div>{storeUserAddress}</div>
+                    <div>
+                        <button type="button" onClick={() => navigate("/user/MyPage", { state: {mainType: "userAddress", subType: null} })}>{storeUserAddress ? "배송지 변경" : "배송지 등록"}</button>
+                    </div>
+                </div>
+                <div>
+                    <div>상품</div>
+                    {orderItemList.map((item) => (
+                        <div key={item.id} style={{border: "1px solid black"}}>
+                            <div>
+                                <span>{item.title}</span> 
+                            </div>
+                            <div>
+                                <img alt={item.title} src={item.image} style={{width: "50px", height: "50px"}}/>
+                                <div>가격: {sum}</div>
+                                <div>수량: {item.itemAmount} </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                <div>
+                    <div>상품금액: {sum}</div>
+                    <div>배송비: {fee}</div>
+                    <div>합계: {sum + fee}</div>
+                </div>
+                <div>
+                    <input type="checkbox" ref={isChk1} />
+                    <span>사항 1</span>
+                </div>
+                <div>
+                    <input type="checkbox" ref={isChk2} />
+                    <span>사항 2</span>
+                </div>
+                <button type="submit">주문하기</button>
+            </form>
+*/}
+        </>
     )
 }
 

@@ -11,8 +11,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Button, TextField, Typography } from '@mui/material';
-import { CheckBox } from "@mui/icons-material";
+import { Button, Typography } from '@mui/material';
 
 const url = `https://fakestoreapi.com/products`;
 
@@ -135,7 +134,7 @@ function CartList({cartItemAmountUp, cartItemAmountDown, cartDelItem, orderByIte
                                 <TableCell align="right">
                                     <div style={{display: "flex"}}>
                                         <Button onClick={() => cartItemAmountDown(storeUserId, item.id, item.itemAmount)} disabled={item.itemAmount <= 1}>-</Button>
-                                        <span type="text" value={item.itemAmount} onChange={(e) => (e.current.value)} min="1" max="10" style={{marginTop: "7px"}} >{item.itemAmount}</span>
+                                        <span type="text" min="1" max="10" style={{marginTop: "7px"}} >{item.itemAmount}</span>
                                         <Button onClick={() => cartItemAmountUp(storeUserId, item.id, item.itemAmount)} disabled={item.itemAmount >= 10}>+</Button>
                                     </div>
                                 </TableCell>

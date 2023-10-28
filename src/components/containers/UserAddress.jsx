@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { userAddAddress, userDelAddress, userMainAddress } from "../../modules/user";
-import { Button, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 
 function UserAddress() {
     const dispatch = useDispatch();
@@ -31,6 +31,7 @@ function UserAddress() {
 
     return(
         <div style={{margin: "50px"}}>
+            
             <div style={{padding: "20px", textAlign: "center"}}>
                 <input type="text" value={newAddress} onChange={(e) => setNewAddress(e.target.value)}/>
                 <button disabled={storeUserAddressList.length > 4} onClick={onAddAddressHandler}>주소 등록</button>
