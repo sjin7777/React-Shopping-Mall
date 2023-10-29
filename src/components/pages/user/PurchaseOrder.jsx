@@ -2,7 +2,8 @@ import { useRef } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { orderSheet } from "../../../modules/order"
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow } from "@mui/material";
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow, TextField } from "@mui/material";
+import { cartDelItem } from "../../../modules/cart";
 
 
 const getCurrentDate = (now) => {
@@ -29,7 +30,7 @@ function PurchaseOrder() {
     let sum = 0;
     let fee = 3000;
     const orderState = "주문 완료";
-    orderItemList.map((item) => sum += item.price * item.itemAmount)
+    orderItemList.map((item) => sum += (item.price * item.itemAmount * 100) / 100)
 
     const onSubmitHandler = (e) => {
         if(!storeUserAddress) alert("배송지를 등록해주세요")
@@ -40,18 +41,16 @@ function PurchaseOrder() {
     }
     const onOrderHandler = () => {
         dispatch(orderSheet(storeUserId, orderItemList, orderState, getCurrentDate(new Date()), storeUserAddress, sum, fee, sum + fee));
+        orderItemList.map((item) => dispatch(cartDelItem(storeUserId, item.id)));
         navigate("/user/OrderHistory", {state: getCurrentDate(new Date())});
     }
     
     return (
         <>
             <form onSubmit={onSubmitHandler} style={{marginTop: "30px"}}>
-                <div>
-                    <div>배송지</div>
-                    <div>{storeUserAddress}</div>
-                    <div>
-                        <button type="button" onClick={() => navigate("/user/MyPage", { state: {mainType: "userAddress", subType: null} })}>{storeUserAddress ? "배송지 변경" : "배송지 등록"}</button>
-                    </div>
+                <div style={{textAlign: "center"}}>
+                    <TextField disabled label="Address" defaultValue={storeUserAddress}/>
+                    <Button type="button" variant="outlined" onClick={() => navigate("/user/MyPage", { state: {mainType: "userAddress", subType: null} })}>{storeUserAddress ? "배송지 변경" : "배송지 등록"}</Button>
                 </div>
                 <TableContainer component={Paper}>
                     <Table aria-label="collapsible table">
