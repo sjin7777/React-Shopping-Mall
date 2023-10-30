@@ -4,6 +4,7 @@ import { cartAddItem, cartDelItem } from "../../modules/cart";
 
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
+import { Box, Button, Card, CardContent, CardMedia, Typography } from "@mui/material";
 
 const ReduxState = (state) => ({
     userId: state.userId,
@@ -42,16 +43,29 @@ function ProductDetail({cartAddItem, cartDelItem}) {
     return (
         <>
             <h1>상품 {id}번 상세페이지</h1>
+            <Card sx={{ display: 'flex' }}>
+                <Box sx={{ width: '500px' }}>
+                    <CardMedia component="img" image={image} alt={title} sx={{width: "200px", textAlign: 'center', padding: "15px 5px", objectFit: "scale-down"}} />
+                </Box>
+                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <CardContent sx={{ flex: '1 0 auto' }}>
+                        <Typography component="div" variant="h6">{title}</Typography><br />
+                        <Typography variant="subtitle2" color="text.secondary" component="div">{price}</Typography><br />
+                        <Typography variant="subtitle3" color="text.secondary" component="p" >{description}</Typography><br />
+                        <Button onClick={onCartHandler} style={storeUserId ? {display: "inline"} : {display: "none"}}>{(inCart) ? <RemoveShoppingCartIcon /> : <AddShoppingCartIcon />}</Button>
+                    </CardContent>
+                </Box>
+            </Card>
+            {/* 
             <div>
                 <h3>{title}</h3>
                 <img src={image} alt={title} style={{width: "200px"}}/>
                 <button onClick={onCartHandler} style={storeUserId ? {display: "inline"} : {display: "none"}}>{(inCart) ? <RemoveShoppingCartIcon /> : <AddShoppingCartIcon />}</button>
                 <h5>{price}</h5>
-                <p>{rating.rate}</p>
-                <p>{rating.count}</p>
                 <div>{category}</div>
                 <p>{description}</p>
             </div>
+             */}
         </>
     )
 }

@@ -130,7 +130,7 @@ function CartList({cartItemAmountUp, cartItemAmountDown, cartDelItem, orderByIte
                             <TableRow key={item.id}>
                                 <TableCell><input type="checkbox" checked={checkedList.some((ckId) => ckId === item.id)} onChange={(e) => onCheckBoxHandler(e, item.id)}/></TableCell>
                                 <TableCell component="th" scope="row"><img alt={item.title} src={item.image} style={{width: "50px", height: "50px"}}/></TableCell>
-                                <TableCell >{item.title}</TableCell>
+                                <TableCell onClick={() => navigate(`/ProductDetail/${item.id}`, {state: {item}})} style={{ cursor: 'pointer'}}>{item.title}</TableCell>
                                 <TableCell align="right">
                                     <div style={{display: "flex"}}>
                                         <Button onClick={() => cartItemAmountDown(storeUserId, item.id, item.itemAmount)} disabled={item.itemAmount <= 1}>-</Button>
