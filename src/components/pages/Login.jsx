@@ -67,16 +67,16 @@ function Login({userCk, userLogin, setToken, cartSelect}) {
 
 
     return (
-        <>
+        <div style={{ textAlign: 'center', margin: '50px'}}>
             <h1>로그인</h1>
             <form onSubmit={onSubmitHandler}>
-                <TextField type="text" label="ID" variant="standard" value={userId} onChange={onUserIdHandler} style={{display: "block"}} />
-                <TextField type="password" label="Password" variant="standard" value={userPwd} onChange={onUserPwdHandler} style={{display: "block"}} />
-                <Button type="submit" variant="outlined" color="success" onClick={() => userCk(userId, userPwd)} style={{marginTop: "20px", width: "200px"}}>로그인</Button>
+                <TextField type="text" label="ID" variant="standard" value={userId} onChange={onUserIdHandler} style={{width: "300px"}} /><br />
+                <TextField type="password" label="Password" variant="standard" value={userPwd} onChange={onUserPwdHandler} style={{width: "300px"}}/><br />
+                <Button type="submit" variant="outlined" color="success" onClick={() => userCk(userId, userPwd)} style={{marginTop: "20px", width: "300px"}}>로그인</Button>
             </form>
             <TransitionsModal modal={modal} onCloseModal={onCloseModal} msg={msg}/>
             {/* <div onChange={onChangeMsg}>{msg}</div> */}
-        </>
+        </div>
     )
 }
 

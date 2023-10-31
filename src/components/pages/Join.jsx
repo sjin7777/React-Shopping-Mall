@@ -90,18 +90,20 @@ function Join({userIdCk, userJoin, cartInit, orderByInit}) {
 
     
     return (
-        <>
+        <div style={{ textAlign: 'center', margin: '50px'}}>
             <h1>회원가입</h1>
             <form onSubmit={onSubmitHandler}>
-                <TextField type="text" label="ID" variant="standard" value={userId} onChange={onUserIdHandler} />
-                <Button type="button" variant="outlined" onClick={onUserIdDuplicatedCk} disabled={(isIdCk && !storeUserIdCk && userId !== "")} >중복확인</Button>
-                <TextField type="password" label="Password" variant="standard" value={userPwd} onChange={onUserPwdHandler} style={{display: "block"}} />
-                <TextField type="password" label="Password Check" variant="standard" value={userPwdCk} onChange={onUwerPwdCkHandler} style={{display: "block"}} />
-                <Button type="submit" variant="outlined" color="success" style={{marginTop: "20px", width: "200px"}} onClick={() => setModal(true)}>가입</Button>
+                <div >
+                    <TextField type="text" label="ID" variant="standard" value={userId} onChange={onUserIdHandler} style={{width: "210px"}}/>
+                    <Button type="button" variant="outlined" onClick={onUserIdDuplicatedCk} disabled={(isIdCk && !storeUserIdCk && userId !== "")} >중복확인</Button>
+                </div>
+                <TextField type="password" label="Password" variant="standard" value={userPwd} onChange={onUserPwdHandler}  style={{width: "300px"}}/><br />
+                <TextField type="password" label="Password Check" variant="standard" value={userPwdCk} onChange={onUwerPwdCkHandler} style={{width: "300px"}}/><br />
+                <Button type="submit" variant="outlined" color="success" style={{marginTop: "20px", width: "300px"}} onClick={() => setModal(true)}>가입</Button>
             </form>
             <TransitionsModal modal={modal} onCloseModal={onCloseModal} msg={msg}/>
             {/* <div onChange={onChangeMsg}>{msg}</div> */}
-        </>
+        </div>
     )
 }
 
