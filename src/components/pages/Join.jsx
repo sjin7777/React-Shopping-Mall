@@ -48,12 +48,14 @@ function Join({userIdCk, userJoin, cartInit, orderByInit}) {
 
     useEffect(() => {
         if(isIdCk) {
-            if(userId === "") setMsg("아이디를 입력해주세요");
-            else if(!storeUserIdCk) setMsg("사용 가능한 아이디입니다")
-            else if(storeUserIdCk) {
-                setMsg("이미 존재하는 아이디입니다");
-                isIdCk = false;
-            } 
+            if(userId && userId.trim().length !== 0) {
+                if(!storeUserIdCk) setMsg("사용 가능한 아이디입니다")
+                else if(storeUserIdCk) {
+                    setMsg("이미 존재하는 아이디입니다");
+                    isIdCk = false;
+                } 
+            } else setMsg("아이디를 입력해주세요");
+
         } else if(!isIdCk && !userId) setMsg("")
     }, [isIdCk])
 
@@ -65,13 +67,13 @@ function Join({userIdCk, userJoin, cartInit, orderByInit}) {
     
     
     const onSubmitHandler = (e) => {
-        if(!userId){
+        if(!userId || userId.trim().length === 0){
             setMsg('아이디를 입력해주세요');
         }else if(!isIdCk) {
             setMsg('아이디 체크는 필수입니다')
-        } else if(!userPwd) {
+        } else if(!userPwd && userPwd.trim().length === 0) {
             setMsg('패스워드를 입력해주세요')
-        } else if(!userPwdCk) {
+        } else if(!userPwdCk && userPwdCk.trim().length === 0) {
             setMsg('패스워드 확인을 해주세요');
         } else if(userPwd !== userPwdCk) {
             setMsg('패스워드와 패스워드 확인의 값이 일치하지 않습니다.');

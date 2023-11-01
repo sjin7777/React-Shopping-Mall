@@ -43,7 +43,7 @@ function Login({userCk, userLogin, setToken, cartSelect}) {
 
     const onSubmitHandler = (e) => {
         setModal(true)
-        if(!userId) setMsg("아이디를 입력해주세요")
+        if(!userId || userId.trim().length === 0) setMsg("아이디를 입력해주세요")
         else if(!userPwd) setMsg("패스워드를 입력해주세요")
         else {
             if(storeUserIdCk) {

@@ -14,12 +14,17 @@ function UserAddress() {
 
 
     const onAddAddressHandler = () => {
-        if(storeUserAddressList.some((address) => address === newAddress)) {
-            alert("이미 존재하는 배송지입니다")
-            setNewAddress("");
+        if(newAddress !== "" && newAddress.trim().length !== 0) {
+            if(storeUserAddressList.some((address) => address === newAddress)) {
+                alert("이미 존재하는 배송지입니다")
+                setNewAddress("");
+            } else {
+                dispatch(userAddAddress(storeUserId, newAddress))
+                if(window.confirm("등록하신 배송지를 기본 배송지로 설정하시겠습니까?")) dispatch(userMainAddress(storeUserId, newAddress))  
+            }
         } else {
-            dispatch(userAddAddress(storeUserId, newAddress))
-            if(window.confirm("등록하신 배송지를 기본 배송지로 설정하시겠습니까?")) dispatch(userMainAddress(storeUserId, newAddress))  
+            alert("주소를 입력해주세요");
+            setNewAddress("");
         }
     }
     
