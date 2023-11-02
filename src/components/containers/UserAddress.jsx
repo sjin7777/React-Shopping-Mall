@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { userAddAddress, userDelAddress, userMainAddress } from "../../modules/user";
-import { Button } from "@mui/material";
+import { Button, ButtonGroup, Input } from "@mui/material";
 
 function UserAddress() {
     const dispatch = useDispatch();
@@ -21,6 +21,7 @@ function UserAddress() {
             } else {
                 dispatch(userAddAddress(storeUserId, newAddress))
                 if(window.confirm("등록하신 배송지를 기본 배송지로 설정하시겠습니까?")) dispatch(userMainAddress(storeUserId, newAddress))  
+                setNewAddress("");
             }
         } else {
             alert("주소를 입력해주세요");
@@ -38,8 +39,8 @@ function UserAddress() {
         <div style={{margin: "50px"}}>
             
             <div style={{padding: "20px", textAlign: "center"}}>
-                <input type="text" value={newAddress} onChange={(e) => setNewAddress(e.target.value)}/>
-                <button disabled={storeUserAddressList.length > 4} onClick={onAddAddressHandler}>주소 등록</button>
+                <Input type="text" value={newAddress} onChange={(e) => setNewAddress(e.target.value)}/>
+                <Button variant="outlined" color="success" disabled={storeUserAddressList.length > 4} onClick={onAddAddressHandler}>주소 등록</Button>
             </div>
             <div style={{border: "solid 1px black"}} >
                 <div>
@@ -50,11 +51,13 @@ function UserAddress() {
             <div style={{border: "solid 1px black"}}>
                 <label>등록된 배송지</label>
                 {storeUserAddressList.map((address, index) => (
-                    <div key={index} style={{width: "500px", height: "50px"}}>
+                    <div key={index} style={{ height: "70px", border: "solid 1px black"}}>
                         <div style={{width: "300px"}}>{address}</div>
-                        <span style={ (address === storeUserAddressMain) ? {display: "inline"} : {display: "none"}}>현재 배송지</span>
-                        <button onClick={() => dispatch(userMainAddress(storeUserId, address))} style={ (address !== storeUserAddressMain) ? {display: "inline"} : {display: "none"}}>기본 배송지로 설정</button>
-                        <button onClick={() => onDelAddressHandler(address)}>배송지 삭제</button>
+                        {/* <span style={ (address === storeUserAddressMain) ? {display: "inline"} : {display: "none"}}>기본 배송지</span> */}
+                        <ButtonGroup >
+                            <Button onClick={() => dispatch(userMainAddress(storeUserId, address))} style={ (address !== storeUserAddressMain) ? {display: "inline"} : {display: "none"}}>기본 배송지로 설정</Button>
+                            <Button onClick={() => onDelAddressHandler(address)}>배송지 삭제</Button>
+                        </ButtonGroup>
                     </div>
                 ))}
             </div>
