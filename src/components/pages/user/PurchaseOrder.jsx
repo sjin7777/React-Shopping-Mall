@@ -29,9 +29,10 @@ function PurchaseOrder() {
 
     let sum = 0;
     let fee = 3000;
-    const orderState = "주문 완료";
     orderItemList.map((item) => sum += (item.price * item.itemAmount * 100) / 100)
-
+    const total = ((sum + fee) * 100) / 100;
+    
+    const orderState = "주문 완료";
     const onSubmitHandler = (e) => {
         if(!storeUserAddress) alert("배송지를 등록해주세요")
         else if(!isChk1.current.checked) alert("사항1에 동의해주세요")
@@ -40,7 +41,7 @@ function PurchaseOrder() {
         e.preventDefault();
     }
     const onOrderHandler = () => {
-        dispatch(orderSheet(storeUserId, orderItemList, orderState, getCurrentDate(new Date()), storeUserAddress, sum, fee, sum + fee));
+        dispatch(orderSheet(storeUserId, orderItemList, orderState, getCurrentDate(new Date()), storeUserAddress, sum, fee, total));
         orderItemList.map((item) => dispatch(cartDelItem(storeUserId, item.id)));
         navigate("/user/OrderHistory", {state: getCurrentDate(new Date())});
     }
@@ -80,7 +81,7 @@ function PurchaseOrder() {
                                 <TableCell align="right"></TableCell>
                                 <TableCell align="right">상품 금액: {sum}</TableCell>
                                 <TableCell align="right">배송비: {fee}</TableCell>
-                                <TableCell align="right">함계: {sum + fee}</TableCell>
+                                <TableCell align="right">함계: {total}</TableCell>
                             </TableRow>
                         </TableFooter>
                     </Table>

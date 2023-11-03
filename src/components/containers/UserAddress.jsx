@@ -49,13 +49,12 @@ function UserAddress() {
                 </div>
             </div>
             <div style={{border: "solid 1px black"}}>
-                <label>등록된 배송지</label>
                 {storeUserAddressList.map((address, index) => (
-                    <div key={index} style={{ height: "70px", border: "solid 1px black"}}>
-                        <div style={{width: "300px"}}>{address}</div>
+                    <div key={index} style={{ display: 'flex', height: "70px", border: "solid 1px black"}}>
+                        <div style={{display:'flex', width: "300px", alignItems:'center'}}>{address}</div>
                         {/* <span style={ (address === storeUserAddressMain) ? {display: "inline"} : {display: "none"}}>기본 배송지</span> */}
-                        <ButtonGroup >
-                            <Button onClick={() => dispatch(userMainAddress(storeUserId, address))} style={ (address !== storeUserAddressMain) ? {display: "inline"} : {display: "none"}}>기본 배송지로 설정</Button>
+                        <ButtonGroup sx={{marginLeft: 'auto'}}>
+                            <Button onClick={() => dispatch(userMainAddress(storeUserId, address))} disabled={address === storeUserAddressMain}>기본 배송지로 설정</Button>
                             <Button onClick={() => onDelAddressHandler(address)}>배송지 삭제</Button>
                         </ButtonGroup>
                     </div>
