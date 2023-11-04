@@ -2,10 +2,13 @@ import { useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { userAddAddress, userDelAddress, userMainAddress } from "../../modules/user";
 import { Button, ButtonGroup, Input } from "@mui/material";
+import AddressModal from "../ui/AddressModal";
 
 function UserAddress() {
     const dispatch = useDispatch();
     const [ newAddress, setNewAddress ] = useState("");
+    const [ addressModal, setAddressModal ] = useState(false);
+    const onCloseAddressModal = (e) => setAddressModal(false);
     const storeUserId = useSelector((state) => ({token: state.token }), shallowEqual).token.userId
     const storeUser = useSelector((state) => ({user: state.user}), shallowEqual).user.userInfo;
     const storeUserArray = Array.isArray(storeUser) ? storeUser[0] : storeUser;
@@ -29,6 +32,10 @@ function UserAddress() {
         }
     }
     
+    const onSearchAddressHandler = () => {
+        setAddressModal(true);
+    }
+
 
     const onDelAddressHandler = (address) => {
         dispatch(userDelAddress(storeUserId, address));
@@ -41,7 +48,10 @@ function UserAddress() {
             <div style={{padding: "20px", textAlign: "center"}}>
                 <Input type="text" value={newAddress} onChange={(e) => setNewAddress(e.target.value)}/>
                 <Button variant="outlined" color="success" disabled={storeUserAddressList.length > 4} onClick={onAddAddressHandler}>주소 등록</Button>
+                {/* <Button variant="outlined" color="success" disabled={storeUserAddressList.length > 4} onClick={onSearchAddressHandler}>주소 검색</Button> */}
             </div>
+            {/* <AddressModal addressModal={addressModal} onCloseAddressModal={onCloseAddressModal} /> */}
+            
             <div style={{border: "solid 1px black"}} >
                 <div>
                     <Button disabled={true}>기본 배송지</Button>
