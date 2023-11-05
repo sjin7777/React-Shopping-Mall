@@ -42,7 +42,7 @@ function AddressModal({addressModal, onCloseAddressModal}) {
                 <Fade in={addressModal}>
                     <Box sx={style}>
                         <Typography id="transition-modal-title" variant="h6" component="h2">
-                            
+                            <input type="text" value={address} onChange={onAddressHandler}/>
                         </Typography>
                     </Box>
                 </Fade>

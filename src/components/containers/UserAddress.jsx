@@ -50,7 +50,7 @@ function UserAddress() {
                 <Button variant="outlined" color="success" disabled={storeUserAddressList.length > 4} onClick={onAddAddressHandler}>주소 등록</Button>
                 {/* <Button variant="outlined" color="success" disabled={storeUserAddressList.length > 4} onClick={onSearchAddressHandler}>주소 검색</Button> */}
             </div>
-            {/* <AddressModal addressModal={addressModal} onCloseAddressModal={onCloseAddressModal} /> */}
+            <AddressModal addressModal={addressModal} onCloseAddressModal={onCloseAddressModal} />
             
             <div style={{border: "solid 1px black"}} >
                 <div>
