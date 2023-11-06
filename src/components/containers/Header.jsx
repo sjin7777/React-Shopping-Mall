@@ -9,10 +9,14 @@ import { Button, ButtonGroup } from "@mui/material";
 import IconCart from "../ui/icons/IconCart";
 import IconHouse from "../ui/icons/IconHouse";
 import styled from "styled-components";
+import "../../css/util.css";
 
 const Nav = styled.nav`
-    position: absolute;
-`
+    position: relative;
+    top: 20%;
+    left: 73%;
+    text-align: right;
+`;
 
 
 function Header() {
@@ -38,8 +42,8 @@ function Header() {
 
     return(
         <>
-            <header style={{ position: 'fixed', background: "black", height: '80px', width: '100%', textAlign: 'center'}}>
-                <Button variant="text" onClick={() => navigate("/")}><IconHouse /></Button>
+            <header style={{ position: 'sticky', width: '100%', height: '80px', top: '0px', backgroundColor: 'black'}}>
+                <Button variant="text" onClick={() => navigate("/")} ><IconHouse /></Button>
                 <Nav style={navGuest}>
                     <ButtonGroup variant="contained" aria-label="outlined primary button group">
                         <Button onClick={() => navigate("/Join")}>Sign up</Button>
@@ -47,7 +51,7 @@ function Header() {
                     </ButtonGroup>
                 </Nav>
                 <Nav style={navUser}>
-                    <div>{storeUserId + '님'}</div>
+                    <span style={{ color: "white"}}>{storeUserId + '님'}</span>
                     <ButtonGroup variant="contained" aria-label="outlined primary button group">
                         <Button onClick={() => navigate("/user/MyPage", {state: {mainType: "userInfo", subType: null}})}>MyPage</Button>
                         <Button onClick={() => navigate("/user/CartList")}><IconCart itemCount={storeUserCart.length}/></Button>
