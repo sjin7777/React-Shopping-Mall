@@ -8,7 +8,11 @@ import { cartRemove } from "../../modules/cart";
 import { Button, ButtonGroup } from "@mui/material";
 import IconCart from "../ui/icons/IconCart";
 import IconHouse from "../ui/icons/IconHouse";
-// import styled from "styled-components";
+import styled from "styled-components";
+
+const Nav = styled.nav`
+    position: absolute;
+`
 
 
 function Header() {
@@ -34,23 +38,23 @@ function Header() {
 
     return(
         <>
-            <header>
+            <header style={{ position: 'fixed', background: "black", height: '80px', width: '100%', textAlign: 'center'}}>
                 <Button variant="text" onClick={() => navigate("/")}><IconHouse /></Button>
+                <Nav style={navGuest}>
+                    <ButtonGroup variant="contained" aria-label="outlined primary button group">
+                        <Button onClick={() => navigate("/Join")}>Sign up</Button>
+                        <Button onClick={() => navigate("/Login")}>Sign in</Button>
+                    </ButtonGroup>
+                </Nav>
+                <Nav style={navUser}>
+                    <div>{storeUserId + '님'}</div>
+                    <ButtonGroup variant="contained" aria-label="outlined primary button group">
+                        <Button onClick={() => navigate("/user/MyPage", {state: {mainType: "userInfo", subType: null}})}>MyPage</Button>
+                        <Button onClick={() => navigate("/user/CartList")}><IconCart itemCount={storeUserCart.length}/></Button>
+                        <Button onClick={onLogoutHandler}>Logout</Button>
+                    </ButtonGroup>
+                </Nav>
             </header>
-            <nav style={navGuest}>
-                <ButtonGroup variant="contained" aria-label="outlined primary button group">
-                    <Button onClick={() => navigate("/Join")}>Sign up</Button>
-                    <Button onClick={() => navigate("/Login")}>Sign in</Button>
-                </ButtonGroup>
-            </nav>
-            <nav style={navUser}>
-                <div>{storeUserId + '님'}</div>
-                <ButtonGroup variant="contained" aria-label="outlined primary button group">
-                    <Button onClick={() => navigate("/user/MyPage", {state: {mainType: "userInfo", subType: null}})}>MyPage</Button>
-                    <Button onClick={() => navigate("/user/CartList")}><IconCart itemCount={storeUserCart.length}/></Button>
-                    <Button onClick={onLogoutHandler}>Logout</Button>
-                </ButtonGroup>
-            </nav>
         </>
     )
 }
