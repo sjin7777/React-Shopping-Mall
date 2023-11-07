@@ -13,18 +13,21 @@ function App() {
     return (
         <BrowserRouter>
             <Header />
-            <Routes>
-                <Route index element={<Main />} />
-                <Route path="ProductDetail/:productId" element={<ItemDetail />}/>
+            <main style={{margin: '100px'}}>
+                <Routes>
+                    <Route index element={<Main />} />
+                    <Route path="ProductDetail/:productId" element={<ItemDetail />}/>
 
-                <Route path="Join" element={<Join />} />
-                <Route path="Login" element={<Login />} />
+                    <Route path="Join" element={<Join />} />
+                    <Route path="Login" element={<Login />} />
 
-                <Route path="user/MyPage" element={<MyPage />}/>
-                <Route path="user/CartList" element={<CartList />}/>
-                <Route path="user/PurchaseOrder" element={<PurchaseOrder />}/>
-                <Route path="user/OrderHistory" element={<OrderHistory />}/>
-            </Routes>
+                    <Route path="user/MyPage" element={<MyPage />}/>
+                    <Route path="user/CartList" element={<CartList />}/>
+                    <Route path="user/PurchaseOrder" element={<PurchaseOrder />}/>
+                    <Route path="user/OrderHistory" element={<OrderHistory />}/>
+                </Routes>
+            </main>
+            <footer></footer>
         </BrowserRouter>
     );
 }

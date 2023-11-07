@@ -29,7 +29,8 @@ function PurchaseOrder() {
 
     let sum = 0;
     let fee = 3000;
-    orderItemList.map((item) => sum += (item.price * item.itemAmount * 100) / 100)
+    orderItemList.map((item) => sum += (item.price * item.itemAmount * 100) / 100);
+    sum = Math.round(sum * 100) / 100;
     const total = ((sum + fee) * 100) / 100;
     
     const orderState = "주문 완료";
