@@ -31,8 +31,8 @@ function UserInfoModify() {
 
     const onUserDelHandler = () => {
         if(window.confirm("정말 탈퇴하시겠습니까?")) {
-            dispatch(delToken(storeUserId))
-            dispatch(userDelete(storeUserId))
+            dispatch(delToken(storeUserId));
+            dispatch(userDelete(storeUserId));
             navigate("/");
             alert("탈퇴 완료");
         }

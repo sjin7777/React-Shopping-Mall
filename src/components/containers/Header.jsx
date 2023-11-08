@@ -5,7 +5,7 @@ import { delToken } from "../../modules/token";
 import { userLogout } from "../../modules/user";
 import { cartRemove } from "../../modules/cart";
 
-import { Button, ButtonGroup } from "@mui/material";
+import { Button, ButtonGroup, responsiveFontSizes } from "@mui/material";
 import IconCart from "../ui/icons/IconCart";
 import IconHouse from "../ui/icons/IconHouse";
 import styled from "styled-components";
@@ -43,7 +43,9 @@ function Header() {
     return(
         <>
             <header style={{ position: 'sticky', width: '100%', height: '80px', top: '0px', backgroundColor: 'black'}}>
-                <Button variant="text" onClick={() => navigate("/")} ><IconHouse /></Button>
+                <div style={{color: 'yellow'}}>
+                    <IconHouse onClick={() => navigate("/")} />
+                </div>
                 <Nav style={navGuest}>
                     <ButtonGroup variant="contained" aria-label="outlined primary button group">
                         <Button onClick={() => navigate("/Join")}>Sign up</Button>
