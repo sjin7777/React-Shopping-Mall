@@ -5,18 +5,10 @@ import { delToken } from "../../modules/token";
 import { userLogout } from "../../modules/user";
 import { cartRemove } from "../../modules/cart";
 
-import { Button, ButtonGroup, responsiveFontSizes } from "@mui/material";
+import "../../css/util.css";
+import HeaderContainer, { HeaderLogo, HeaderNav, HeaderNavMenu, HeaderNavMenuItem } from "../ui/tags/HeaderContainer";
 import IconCart from "../ui/icons/IconCart";
 import IconHouse from "../ui/icons/IconHouse";
-import styled from "styled-components";
-import "../../css/util.css";
-
-const Nav = styled.nav`
-    position: relative;
-    top: 20%;
-    left: 73%;
-    text-align: right;
-`;
 
 
 function Header() {
@@ -40,28 +32,23 @@ function Header() {
         }
     }
 
-    return(
-        <>
-            <header style={{ position: 'sticky', width: '100%', height: '80px', top: '0px', backgroundColor: 'black'}}>
-                <div style={{color: 'yellow'}}>
-                    <IconHouse onClick={() => navigate("/")} />
-                </div>
-                <Nav style={navGuest}>
-                    <ButtonGroup variant="contained" aria-label="outlined primary button group">
-                        <Button onClick={() => navigate("/Join")}>Sign up</Button>
-                        <Button onClick={() => navigate("/Login")}>Sign in</Button>
-                    </ButtonGroup>
-                </Nav>
-                <Nav style={navUser}>
-                    <span style={{ color: "white"}}>{storeUserId + '님'}</span>
-                    <ButtonGroup variant="contained" aria-label="outlined primary button group">
-                        <Button onClick={() => navigate("/user/MyPage", {state: {mainType: "userInfo", subType: null}})}>MyPage</Button>
-                        <Button onClick={() => navigate("/user/CartList")}><IconCart itemCount={storeUserCart.length}/></Button>
-                        <Button onClick={onLogoutHandler}>Logout</Button>
-                    </ButtonGroup>
-                </Nav>
-            </header>
-        </>
+    return (
+        <HeaderContainer>
+            <HeaderLogo onClick={() => navigate("/")}><IconHouse/></HeaderLogo>
+            <HeaderNav style={navGuest}>
+                <HeaderNavMenu>
+                    <HeaderNavMenuItem onClick={() => navigate("/Join")}>Sign up</HeaderNavMenuItem>
+                    <HeaderNavMenuItem onClick={() => navigate("/Login")}>Sign in</HeaderNavMenuItem>
+                </HeaderNavMenu>
+            </HeaderNav>
+            <HeaderNav style={navUser}>
+                <HeaderNavMenu>
+                    <HeaderNavMenuItem onClick={() => navigate("/user/MyPage", {state: {mainType: "userInfo", subType: null}})}>MyPage</HeaderNavMenuItem>
+                    <HeaderNavMenuItem onClick={() => navigate("/user/CartList")}><IconCart itemCount={storeUserCart.length}/></HeaderNavMenuItem>
+                    <HeaderNavMenuItem onClick={onLogoutHandler}>Logout</HeaderNavMenuItem>
+                </HeaderNavMenu>
+            </HeaderNav>
+        </HeaderContainer>
     )
 }
 
