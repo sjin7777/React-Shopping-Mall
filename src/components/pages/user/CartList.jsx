@@ -109,7 +109,7 @@ function CartList({cartItemAmountUp, cartItemAmountDown, cartDelItem, orderByIte
 
     return (
         <>
-            <h1> {storeUserId}의 장바구니</h1>
+            <h1> {storeUserId}&#39;s Cart</h1>
             
             { isLoading 
                 ? <IconLoading /> 

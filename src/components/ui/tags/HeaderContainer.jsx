@@ -16,6 +16,7 @@ export const HeaderLogo = styled.div`
     display: flex;
     align-items: center;
     cursor: pointer;
+    margin: 1rem;
 `;
 
 export const HeaderNav = styled.nav`

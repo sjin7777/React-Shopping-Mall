@@ -13,7 +13,7 @@ function Item(props) {
             <Box
                 sx={{
                     width: '170px',
-                    height: '300px',
+                    height: '350px',
                     p: 1,
                     m: 1,
                     bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#101010' : 'grey.100'),
@@ -29,7 +29,7 @@ function Item(props) {
             >
                 <div key={item.id} onClick={() => navigate(`/ProductDetail/${item.id}`, {state: {item}})} style={{width: "150px", padding: "0 10px" }}>
                     <div style={{height: "200px", textAlign: "center" }}><img src={item.image} alt={item.title} style={{width: "90%",  height: "90%", padding: "15px 5px", objectFit: "scale-down"}} /></div>
-                    <h3 style={{height: "40px", paddingTop: "10px" }}>{(itemTitle.length < 30) ? itemTitle : itemTitle.slice(0,30) + '...'}</h3>
+                    <h3 style={{height: "90px", paddingTop: "10px" }}>{(itemTitle.length < 30) ? itemTitle : itemTitle.slice(0,30) + '...'}</h3>
                     <div style={{height: "10px", textAlign: "center"}}>{item.price}</div>
                 </div>
             </Box>

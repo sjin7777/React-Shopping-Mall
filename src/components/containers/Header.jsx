@@ -34,7 +34,7 @@ function Header() {
 
     return (
         <HeaderContainer>
-            <HeaderLogo onClick={() => navigate("/")}><IconHouse/></HeaderLogo>
+            <HeaderLogo onClick={() => navigate("/")}><IconHouse /></HeaderLogo>
             <HeaderNav style={navGuest}>
                 <HeaderNavMenu>
                     <HeaderNavMenuItem onClick={() => navigate("/Join")}>Sign up</HeaderNavMenuItem>

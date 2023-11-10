@@ -42,7 +42,7 @@ function ProductDetail({cartAddItem, cartDelItem}) {
     }
     return (
         <>
-            <h1>상품 {id}번 상세페이지</h1>
+            <h1>No. {id}</h1>
             <Card sx={{ display: 'flex' }}>
                 <Box sx={{ width: '500px' }}>
                     <CardMedia component="img" image={image} alt={title} sx={{width: "200px", textAlign: 'center', padding: "15px 5px", objectFit: "scale-down"}} />

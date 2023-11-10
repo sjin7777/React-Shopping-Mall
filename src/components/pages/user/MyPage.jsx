@@ -16,7 +16,6 @@ function MyPage() {
 
     return(
         <>
-            <h1>마이페이지</h1>
             <Box sx={{width: '100%'}}>
                 <TabContext value={mainType} >
                     <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
